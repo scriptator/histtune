@@ -22,7 +22,24 @@
 <![endif]-->
 
 <!-- Add your site or application content here -->
-<p>Hello world! This is HTML5 Boilerplate.</p>
+<h1>Stimmungssysteme</h1>
+
+<div class="player">
+    <p>
+        <a href="#example" onclick="MIDIjs.play('midi/alan_jackson_dont_rock_the_jukebox.mid');">Play Rock the Jukebox (Alan Jackson)</a>&nbsp; &nbsp;
+        <a href="#example" onclick="MIDIjs.play('midi/bobby_sharp_unchain_my_heart.mid');">Play Unchain my Heart (Bobby Sharp)</a>&nbsp;  &nbsp;
+        <a href="#example" onclick="MIDIjs.play('midi/hinematov.mid');">Play Hinematov (Reiner Oberbeck)</a>&nbsp; &nbsp;
+        <a href="#example" onclick="MIDIjs.play('midi/barbara_streisand_woman_in_love.mid');">Play Woman in Love (Barbara Streisand)</a></p>
+    <p>
+        <a href="#" onclick="MIDIjs.stop();">Stop Playback</a></p>
+
+    <div style="font-size: 71%;font-size: 71%">
+        MIDIjs status: <span id="MIDIjs.message" style="color: green">Initializing ...</span>
+        <div>
+            MIDIjs audio time (s): <span id="MIDIjs.audio_time" style="color: green">-</span></div>
+    </div>
+</div>
+
 
 <script>
     console.log(MIDIjs.get_audio_status());

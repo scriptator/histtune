@@ -1,15 +1,15 @@
-// MIDIjs 
+// MIDIjs
 //
-// 100% JavaScript MIDI File Player using W3C Web Audio API 
+// 100% JavaScript MIDI File Player using W3C Web Audio API
 // with fallbacks for older browsers
-// 
+//
 // Copyrights Johannes Feulner, Karlsruhe, Germany, 2014. All rights reserved.
 // Contact: weblily@weblily.net
 //
 //	Copyrights scorio GmbH, Pfinztal, Germany 2017. All rights reserved.
 
 (function (global) {
- 
+
   var audioMethod;
   var context = 0;
   var source = 0;
@@ -20,17 +20,17 @@
   var midiFileBuffer;
   var read_wave_bytes = 0;
   var song = 0;
-  var midijs_url = ""; // will be slash terminated
+  var midijs_url = "http://www.midijs.net/lib/"; // will be slash terminated
   var aForAbsoluteUrl; // initially undefined
   var start_time = 0;
   var audio_status = "";
   var isEndless = false;
 
-  function browserVersion() { 
+  function browserVersion() {
 	var nVer = navigator.appVersion;
 	var nAgt = navigator.userAgent;
 	var browserName  = navigator.appName;
-	var fullVersion  = ''+parseFloat(navigator.appVersion); 
+	var fullVersion  = ''+parseFloat(navigator.appVersion);
 	var majorVersion = parseInt(navigator.appVersion,10);
 	var nameOffset,verOffset,ix;
 
@@ -38,7 +38,7 @@
 	if ((verOffset=nAgt.indexOf("Opera"))!=-1) {
 	 browserName = "Opera";
 	 fullVersion = nAgt.substring(verOffset+6);
-	 if ((verOffset=nAgt.indexOf("Version"))!=-1) 
+	 if ((verOffset=nAgt.indexOf("Version"))!=-1)
 	   fullVersion = nAgt.substring(verOffset+8);
 	}
 	// In MSIE, the true version is after "MSIE" in userAgent
@@ -50,13 +50,13 @@
     // the true version is after "rv"
 	else if ((verOffset=nAgt.indexOf("Trident"))!=-1) {
 	 browserName = "Microsoft Internet Explorer";
-         if ((verOffset=nAgt.indexOf("rv:"))!=-1) { 
+         if ((verOffset=nAgt.indexOf("rv:"))!=-1) {
 	   fullVersion = nAgt.substring(verOffset+3);
           } else  {
            fullVersion = '0.0'; // hm?
           }
         }
-	// In Chrome, the true version is after "Chrome" 
+	// In Chrome, the true version is after "Chrome"
 	else if ((verOffset=nAgt.indexOf("Chrome"))!=-1) {
 	 browserName = "Chrome";
 	 fullVersion = nAgt.substring(verOffset+7);
@@ -66,21 +66,21 @@
 	 browserName = "Android";
 	 fullVersion = nAgt.substring(verOffset+8);
 	}
-	// In Safari, the true version is after "Safari" or after "Version" 
+	// In Safari, the true version is after "Safari" or after "Version"
 	else if ((verOffset=nAgt.indexOf("Safari"))!=-1) {
 	 browserName = "Safari";
 	 fullVersion = nAgt.substring(verOffset+7);
-	 if ((verOffset=nAgt.indexOf("Version"))!=-1) 
+	 if ((verOffset=nAgt.indexOf("Version"))!=-1)
 	   fullVersion = nAgt.substring(verOffset+8);
 	}
-	// In Firefox, the true version is after "Firefox" 
+	// In Firefox, the true version is after "Firefox"
 	else if ((verOffset=nAgt.indexOf("Firefox"))!=-1) {
 	 browserName = "Firefox";
 	 fullVersion = nAgt.substring(verOffset+8);
 	}
-	// In most other browsers, "name/version" is at the end of userAgent 
-	else if ( (nameOffset=nAgt.lastIndexOf(' ')+1) < 
-		  (verOffset=nAgt.lastIndexOf('/')) ) 
+	// In most other browsers, "name/version" is at the end of userAgent
+	else if ( (nameOffset=nAgt.lastIndexOf(' ')+1) <
+		  (verOffset=nAgt.lastIndexOf('/')) )
 	{
 	 browserName = nAgt.substring(nameOffset,verOffset);
 	 fullVersion = nAgt.substring(verOffset+1);
@@ -96,7 +96,7 @@
 
 	majorVersion = parseInt(''+fullVersion,10);
 	if (isNaN(majorVersion)) {
-	 fullVersion  = ''+parseFloat(navigator.appVersion); 
+	 fullVersion  = ''+parseFloat(navigator.appVersion);
 	 majorVersion = parseInt(navigator.appVersion,10);
 	}
 
@@ -127,7 +127,7 @@
     // others
     newjs.onload = function () {
       callback();
-    }; 
+    };
 
     newjs.onerror = function() {
       MIDIjs.message_callback('Error: Cannot load  JavaScript filet ' + file);
@@ -140,12 +140,13 @@
   }
 
   function get_next_wave(ev) {
+      console.log("Gettings next wave!");
     var player_event = new Object();
     player_event.time = context.currentTime - start_time;
     MIDIjs.player_callback(player_event);
     // collect new wave data from libtimidity into waveBuffer
-    read_wave_bytes = Module.ccall('mid_song_read_wave', 'number', 
-                                   ['number', 'number', 'number', 'number'], 
+    read_wave_bytes = Module.ccall('mid_song_read_wave', 'number',
+                                   ['number', 'number', 'number', 'number'],
                                    [song, waveBuffer, audioBufferSize * 2, isEndless]);
     if (0 == read_wave_bytes) {
        stop_WebAudioAPI();
@@ -156,7 +157,7 @@
     for (var i = 0; i < audioBufferSize; i++) {
       if (i < read_wave_bytes) {
         // convert PCM data from C sint16 to JavaScript number (range -1.0 .. +1.0)
-        ev.outputBuffer.getChannelData(0)[i] = Module.getValue(waveBuffer + 2 * i, 'i16') / max_i16; 
+        ev.outputBuffer.getChannelData(0)[i] = Module.getValue(waveBuffer + 2 * i, 'i16') / max_i16;
       } else {
         MIDIjs.message_callback("Filling 0 at end of buffer");
         ev.outputBuffer.getChannelData(0)[i] = 0;   // fill end of buffer with zeroes, may happen at the end of a piece
@@ -183,19 +184,19 @@
       FS.createDataFile('pat/', filename, new Int8Array(request.response), true, true);
       MIDIjs.message_callback("Loading instruments: " + num_missing);
       if (num_missing == 0) {
-        stream =  Module.ccall('mid_istream_open_mem', 'number', 
-                               ['number', 'number', 'number'], 
+        stream =  Module.ccall('mid_istream_open_mem', 'number',
+                               ['number', 'number', 'number'],
                                [midiFileBuffer, midiFileArray.length , false]);
         var MID_AUDIO_S16LSB = 0x8010; // signed 16-bit samples
-        var options = Module.ccall('mid_create_options', 'number', 
-                                   ['number', 'number', 'number', 'number'], 
+        var options = Module.ccall('mid_create_options', 'number',
+                                   ['number', 'number', 'number', 'number'],
                                    [context.sampleRate, MID_AUDIO_S16LSB, 1, audioBufferSize * 2]);
         song = Module.ccall('mid_song_load', 'number', ['number', 'number'], [stream, options]);
         rval =  Module.ccall('mid_istream_close', 'number', ['number'], [stream]);
         Module.ccall('mid_song_start', 'void', ['number'], [song]);
 
         // create script Processor with buffer of size audioBufferSize and a single output channel
-        source = context.createScriptProcessor(audioBufferSize, 0, 1);  
+        source = context.createScriptProcessor(audioBufferSize, 0, 1);
         waveBuffer = Module._malloc(audioBufferSize * 2);
         source.onaudioprocess = get_next_wave;        // add eventhandler for next buffer full of audio data
         source.connect(context.destination);          // connect the source to the context's destination (the speakers)
@@ -212,23 +213,23 @@
     var sinusBuffer = context.createBuffer(1, 44100, 44100);
     freq = 440; // Hz
     for (i = 0; i < 48000; i++) {
-      sinusBuffer.getChannelData(0)[i] = 0; // Math.sin(i / 48000 * 2 * Math.PI * freq); 
-    } 
+      sinusBuffer.getChannelData(0)[i] = 0; // Math.sin(i / 48000 * 2 * Math.PI * freq);
+    }
     var bufferSource = context.createBufferSource();    // creates a sound source
-    bufferSource.buffer = sinusBuffer;  
+    bufferSource.buffer = sinusBuffer;
     bufferSource.connect(context.destination);          // connect the source to the context's destination (the speakers)
-    bufferSource.start(0); // play the bufferSource now        
+    bufferSource.start(0); // play the bufferSource now
   }
-    
+
   function play_WebAudioAPI(url) {
     stop_WebAudioAPI();
     isEndless = false;
     audioBufferSize = audioBufferSizePlayer;
     play2_WebAudioAPI(url);
   }
-  
+
   function play2_WebAudioAPI(url) {
-    libtimidity_url = midijs_url + 'libtimidity.js'; 
+    libtimidity_url = 'js/libtimidity.js';
 
     // script already loaded ? Right after page load, this will not be the case
     for (var i = 0; i < document.scripts.length; i++) {
@@ -240,13 +241,13 @@
     }
     MIDIjs.message_callback("Loading libtimidity ... ");
     if (navigator.platform == 'iPad' || navigator.platform == 'iPhone' || navigator.platform == 'iPod') {
-      // Unmute works only after return of the user generated event. So we let the event return and play with delay 
+      // Unmute works only after return of the user generated event. So we let the event return and play with delay
       // from the callback after libtimidity will have been loaded
       // otherwise the first play_WebAudioAPI() call after page load would remain silent on iOS devices
       unmute_iOS_hack();
     }
-    require_script(libtimidity_url, function() { play_WebAudioAPI_with_script_loaded(url); }); 
-  } 
+    require_script(libtimidity_url, function() { play_WebAudioAPI_with_script_loaded(url); });
+  }
 
   function play_WebAudioAPI_with_script_loaded(url) {
 
@@ -255,7 +256,7 @@
     var request = new XMLHttpRequest();
     request.open('GET', url, true);
     request.responseType = 'arraybuffer';
-    
+
     request.onerror = function() {
       MIDIjs.message_callback('Error: Cannot retrieve MIDI file ' + url);
     }
@@ -273,12 +274,12 @@
       Module.writeArrayToMemory(midiFileArray, midiFileBuffer);
 
       rval = Module.ccall('mid_init', 'number', [], []);
-      stream =  Module.ccall('mid_istream_open_mem', 'number', 
-                             ['number', 'number', 'number'], 
+      stream =  Module.ccall('mid_istream_open_mem', 'number',
+                             ['number', 'number', 'number'],
                              [midiFileBuffer, midiFileArray.length , false]);
       var MID_AUDIO_S16LSB = 0x8010; // signed 16-bit samples
-      var options = Module.ccall('mid_create_options', 'number', 
-                                 ['number', 'number', 'number', 'number'], 
+      var options = Module.ccall('mid_create_options', 'number',
+                                 ['number', 'number', 'number', 'number'],
                                  [context.sampleRate, MID_AUDIO_S16LSB, 1, audioBufferSize * 2]);
       song = Module.ccall('mid_song_load', 'number', ['number', 'number'], [stream, options]);
       rval =  Module.ccall('mid_istream_close', 'number', ['number'], [stream]);
@@ -292,7 +293,7 @@
       } else {
         Module.ccall('mid_song_start', 'void', ['number'], [song]);
         // create script Processor with auto buffer size and a single output channel
-        source = context.createScriptProcessor(audioBufferSize, 0, 1);  
+        source = context.createScriptProcessor(audioBufferSize, 0, 1);
         waveBuffer = Module._malloc(audioBufferSize * 2);
         source.onaudioprocess = get_next_wave;    // add event handler for next buffer full of audio data
         source.connect(context.destination);      // connect the source to the context's destination (the speakers)
@@ -313,14 +314,14 @@
 		  Module.ccall('mid_song_note_on', 'void', ['number', 'number', 'number', 'number'], [song, channel, key, velocity]);
 	  }
   }
-  
+
   function stop_WebAudioAPI() {
     if (source) {
       // terminate playback
       source.disconnect();
-      
+
       // hack: without this, Firfox 25 keeps firing the onaudioprocess callback
-      source.onaudioprocess = 0; 
+      source.onaudioprocess = 0;
 
       source = 0;
 
@@ -345,29 +346,29 @@
 	aForAbsoluteUrl.href = url;
 	return aForAbsoluteUrl.href;
   }
-  
+
   function forceHttp(url) {
 	  if ('http:' == location.protocol.toLowerCase()) {
 		  return url;
 	  }
-	  
+
 	  var absUrl = getAbsoluteUrl(url);
 	  var httpUrl = absUrl.replace('https:', 'http:');
 	  // console.log("url: " + url + ' absUrl: ' + absUrl + 'httpUrl: ' + httpUrl);
-	  
+
 	  return httpUrl;
   }
-  
+
   function play_bgsound(url) {
     stop_bgsound();
 
     url = forceHttp(url);
-    
+
     var sounddiv = document.getElementById('scorioMIDI');
     if (!sounddiv) {
       sounddiv = document.createElement('div');
       sounddiv.setAttribute('id', 'scorioMIDI');
-        
+
       // hack: without the nbsp or some other character the bgsound will not be inserted
       sounddiv.innerHTML = '&nbsp;<bgsound src="' + url + '" volume="100"/>';
       document.body.appendChild(sounddiv);
@@ -394,7 +395,7 @@
     if (!sounddiv) {
       sounddiv = document.createElement('div');
       sounddiv.setAttribute('id', 'scorioMIDI');
-        
+
       sounddiv.innerHTML = '<object data="' + url + '" autostart="true" volume="100" type="audio/mid"></object>';
       if (document.body) { // body does not exist during page load at this point
     	  document.body.appendChild(sounddiv);
@@ -409,33 +410,33 @@
   function stop_object() {
     if (source) {
       var sounddiv = source;
-     
+
       sounddiv.parentNode.removeChild(sounddiv);
       source = 0;
     }
     MIDIjs.message_callback(audio_status);
   }
-  
+
   // Get this script's URL
   function myUrl() {
 	  for (var i = 0; i < document.scripts.length; i++) {
 	    var script_src =  document.scripts[i].src;
 	    var index = script_src.lastIndexOf("midi.js");
 	    if (index == script_src.length - 7) {
-	       return script_src.substr(0, index); 
+	       return script_src.substr(0, index);
 	    }
 	  }
 	  return null; // error, script did not find itself
   }
-  
-  midijs_url = myUrl();
+
+  // midijs_url = myUrl();
 
   var bv = browserVersion();
   try {
-    if ((bv.platform == "iPhone" || bv.platform == "iPod" || bv.platform == "iPad") 
+    if ((bv.platform == "iPhone" || bv.platform == "iPod" || bv.platform == "iPad")
         && bv.majorVersion <= 6) {
        audioMethod = 'none';
-    } else { 
+    } else {
       // Fix up for prefixing
       window.AudioContext = window.AudioContext || window.webkitAudioContext;
       context = new AudioContext();
@@ -451,7 +452,7 @@
       audioMethod = 'object';
     }
   }
-   
+
   //alert('Browser name  = '+bv.browserName+'<br>'
   //+'Full version  = '+bv.fullVersion+'<br>'
   //+'Major version = '+bv.majorVersion+'<br>'
@@ -459,7 +460,7 @@
   //+'navigator.userAgent = '+bv.userAgent+'<br>'
   //+'navigator.platform = '+bv.platform+'<br>');
 
-  global.MIDIjs = new Object(); 
+  global.MIDIjs = new Object();
 
   // default: write messages to browser console
   global.MIDIjs.message_callback = function(message) { console.log(message); };
@@ -472,7 +473,7 @@
     global.MIDIjs.play = play_WebAudioAPI;
     global.MIDIjs.stop = stop_WebAudioAPI;
     audio_status = "audioMethod: WebAudioAPI" +
-                   ", sampleRate (Hz): " + context.sampleRate + 
+                   ", sampleRate (Hz): " + context.sampleRate +
                    ", audioBufferSize (Byte): " + audioBufferSize;
     global.MIDIjs.noteOn = noteOn_WebAudioAPI;
   } else if (audioMethod == 'bgsound') {
@@ -488,8 +489,8 @@
     global.MIDIjs.stop = function(url) {};
     audio_status = "audioMethod: No method found";
   }
-  
-  // Force "mixed secure/insecure content" warning   
+
+  // Force "mixed secure/insecure content" warning
   if (bv.browserName == 'Microsoft Internet Explorer') {
       if ('https:' == location.protocol.toLowerCase()) {
     	  play_bgsound('http://' + midijs_url + 'midi/silence.mid');
