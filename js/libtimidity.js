@@ -6105,20 +6105,20 @@ var asm = (function(global, env, buffer) {
         var J = 0;
         var K = 0;
         var L = 0;
-        var M = global.Math.floor;
-        var N = global.Math.abs;
-        var O = global.Math.sqrt;
-        var P = global.Math.pow;
-        var Q = global.Math.cos;
-        var R = global.Math.sin;
-        var S = global.Math.tan;
-        var T = global.Math.acos;
-        var U = global.Math.asin;
-        var V = global.Math.atan;
-        var W = global.Math.atan2;
-        var X = global.Math.exp;
-        var Y = global.Math.log;
-        var Z = global.Math.ceil;
+        var FLOOR = global.Math.floor;
+        var ABS = global.Math.abs;
+        var SQRT = global.Math.sqrt;
+        var POW = global.Math.pow;
+        var COSINUS = global.Math.cos;
+        var SINUS = global.Math.sin;
+        var TANGENS = global.Math.tan;
+        var ACOS = global.Math.acos;
+        var ASIN = global.Math.asin;
+        var ATAN = global.Math.atan;
+        var ATAN2 = global.Math.atan2;
+        var EXP = global.Math.exp;
+        var LOG = global.Math.log;
+        var CEIL = global.Math.ceil;
         var _ = global.Math.imul;
         var $ = env.abort;
         var aa = env.assert;
@@ -7475,7 +7475,7 @@ var asm = (function(global, env, buffer) {
                     if ((b | 0) == 0) {
                         break
                     }
-                    c = +P(2.0, +(+((b | 0) / 65536 | 0 | 0) / 1200.0)) * 1.0e3;
+                    c = +POW(2.0, +(+((b | 0) / 65536 | 0 | 0) / 1200.0)) * 1.0e3;
                     d = c;
                     return +d
                 }
@@ -8482,7 +8482,7 @@ var asm = (function(global, env, buffer) {
             }
             f = e + 1724 + (a * 236 | 0) + 44 | 0;
             c[f >> 2] = (c[f >> 2] | 0) + (c[e + 1724 + (a * 236 | 0) + 48 >> 2] | 0);
-            g[e + 1724 + (a * 236 | 0) + 76 >> 2] = 1.0 - (+R(+(+(c[e + 1724 + (a * 236 | 0) + 44 >> 2] >> 5 | 0) * .006135923151542565)) + 1.0) * +(b | 0) * 1.0 * 762939453125.0e-17;
+            g[e + 1724 + (a * 236 | 0) + 76 >> 2] = 1.0 - (+SINUS(+(+(c[e + 1724 + (a * 236 | 0) + 44 >> 2] >> 5 | 0) * .006135923151542565)) + 1.0) * +(b | 0) * 1.0 * 762939453125.0e-17;
             return
         }
 
@@ -8646,7 +8646,7 @@ var asm = (function(global, env, buffer) {
             return
         }
 
-        function b0(b, d, e, f) {
+        function songNoteOn(b, d, e, f) {
             b = b | 0;
             d = d | 0;
             e = e | 0;
@@ -8829,7 +8829,7 @@ var asm = (function(global, env, buffer) {
             return
         }
 
-        function b6(b, e, f, h) {
+        function readNextWave(b, e, f, h) {
             b = b | 0;
             e = e | 0;
             f = f | 0;
@@ -8865,6 +8865,7 @@ var asm = (function(global, env, buffer) {
                     if (~~(+(c[c[l + 13080 >> 2] >> 2] | 0) / +g[258]) >>> 0 > (c[l + 13088 >> 2] | 0) >>> 0) {
                         break
                     }
+                    // switch over midi events
                     switch (d[(c[l + 13080 >> 2] | 0) + 5 | 0] | 0) {
                         case 99:
                             {
@@ -8947,7 +8948,7 @@ var asm = (function(global, env, buffer) {
                                 c[392] = (d[(c[l + 13080 >> 2] | 0) + 4 | 0] | 0) + (d[(c[l + 13080 >> 2] | 0) + 7 | 0] << 8) + (d[(c[l + 13080 >> 2] | 0) + 6 | 0] << 16);
                                 break
                             };
-                        case 8:
+                        case 8: // pitchbend
                             {
                                 c[l + 1084 + ((d[(c[l + 13080 >> 2] | 0) + 4 | 0] | 0) * 40 | 0) + 20 >> 2] = (d[(c[l + 13080 >> 2] | 0) + 6 | 0] | 0) + (d[(c[l + 13080 >> 2] | 0) + 7 | 0] << 7);
                                 g[l + 1084 + ((d[(c[l + 13080 >> 2] | 0) + 4 | 0] | 0) * 40 | 0) + 36 >> 2] = 0.0;
@@ -8972,9 +8973,9 @@ var asm = (function(global, env, buffer) {
                     c[p >> 2] = (c[p >> 2] | 0) + 8
                 }
                 if (~~(+(c[c[l + 13080 >> 2] >> 2] | 0) / +g[258]) >>> 0 > b >>> 0) {
-                    ce(l, k, b - (c[l + 13088 >> 2] | 0) | 0)
+                    computeData(l, k, b - (c[l + 13088 >> 2] | 0) | 0)
                 } else {
-                    ce(l, k, ~~(+(c[c[l + 13080 >> 2] >> 2] | 0) / +g[258]) - (c[l + 13088 >> 2] | 0) | 0)
+                    computeData(l, k, ~~(+(c[c[l + 13080 >> 2] >> 2] | 0) / +g[258]) - (c[l + 13088 >> 2] | 0) | 0)
                 }
             }
             if ((o | 0) == 752) {
@@ -9182,7 +9183,7 @@ var asm = (function(global, env, buffer) {
             return
         }
 
-        function ce(a, b, d) {
+        function computeData(a, b, d) {
             a = a | 0;
             b = b | 0;
             d = d | 0;
@@ -11490,7 +11491,7 @@ var asm = (function(global, env, buffer) {
                 }
             }
             m = +(c[(c[a + 4 >> 2] | 0) + 12 >> 2] | 0) * +(c[a + 12 >> 2] | 0) / (+(c[(c[a + 4 >> 2] | 0) + 32 >> 2] | 0) * +(c[f + 4 >> 2] | 0)) * 4096.0;
-            f = ~~(+R(+(+(c[a + 208 >> 2] << 4 | 0) * .006135923151542565)) * +(e | 0) * 1.0);
+            f = ~~(+SINUS(+(+(c[a + 208 >> 2] << 4 | 0) * .006135923151542565)) * +(e | 0) * 1.0);
             if ((f | 0) < 0) {
                 f = -f | 0;
                 e = 1704 + ((f >> 5 & 255) << 3) | 0;
@@ -11636,7 +11637,7 @@ var asm = (function(global, env, buffer) {
             return 0
         }
 
-        function cN(a) {
+        function istreamOpenFile(a) {
             a = a | 0;
             var b = 0,
                 c = 0,
@@ -11654,7 +11655,7 @@ var asm = (function(global, env, buffer) {
             return 0
         }
 
-        function cO(a, b, d) {
+        function istreamOpenMem(a, b, d) {
             a = a | 0;
             b = b | 0;
             d = d | 0;
@@ -12526,7 +12527,7 @@ var asm = (function(global, env, buffer) {
             return
         }
 
-        function cZ() {
+        function midExit() {
             var a = 0,
                 b = 0,
                 d = 0,
@@ -15177,11 +15178,11 @@ var asm = (function(global, env, buffer) {
             _strlen: c1,
             _strcat: c3,
             _mid_create_options: cV,
-            _mid_istream_open_mem: cO,
-            _mid_istream_open_file: cN,
-            _mid_song_read_wave: b6,
-            _mid_exit: cZ,
-            _mid_song_note_on: b0,
+            _mid_istream_open_mem: istreamOpenMem,
+            _mid_istream_open_file:istreamOpenFile,
+            _mid_song_read_wave: readNextWave,
+            _mid_exit: midExit,
+            _mid_song_note_on: songNoteOn,
             _strncpy: c7,
             _memset: c5,
             _memcpy: c6,
