@@ -2,18 +2,18 @@
  * Created by johannesvass on 14.01.17.
  */
 
-const DEFAULT_CONCERT_PITCH = 440;
+const DEFAULT_CONCERT_PITCH_FREQ = 440; // Hz
+const CONCERT_PITCH_NOTE = new Note(69);
 
+/**
+ * Construct a new TuningSystem.
+ *
+ * @param name the display name of the temperament
+ * @param deviations an array containing 12 numbers which get interpreted as the deviations from the equal temerament in cents
+ * @param concertPitch [optional] the concert pitch in Hz, default 440
+ * @constructor
+ */
 function TuningSystem(name, deviations, concertPitch) {
-
-    this.name = name;
-    this.concertPitch = concertPitch ? concertPitch : DEFAULT_CONCERT_PITCH;
-
-    this.deviations = this.parseDeviations(deviations);
-
-    if (!deviations) {
-        throw new Error("Can't init TuningSystem " + name + " because the deviation structure could not be parsed.");
-    }
 
     /**
      * This function calculates the pitch in Hertz given this tuning system, given the value of a midi note.
@@ -33,28 +33,59 @@ function TuningSystem(name, deviations, concertPitch) {
      * @returns the pitch in Hz as a {number}
      */
     this.getPitchForNote = function (note) {
-        // TODO all the magic
+        var deviation = this.deviations[note.noteIndex]; // deviation in cents
+        var differenceFromCP = note.getDifferenceToNote(CONCERT_PITCH_NOTE); // difference in half tones
 
-        return DEFAULT_CONCERT_PITCH;
+        var frequencyRatio = Math.pow(2, (differenceFromCP * 100 + deviation) / 1200);
+        return this.concertPitch * frequencyRatio;
     };
 
-    /**
-     *
-     * @param deviations
-     */
-    this.parseDeviations = function (deviations) {
+    this.name = name;
+    this.concertPitch = concertPitch ? concertPitch : DEFAULT_CONCERT_PITCH_FREQ;
+    this.deviations = deviations;
 
-    };
+    if (!deviations.length === 12) {
+        throw new Error("Deviations has to be an array containing the deviations from equal temerament in cents.");
+    }
 }
 
-function Deviation() {
-
-}
-
+/**
+ * A Note object which can calculate the ocave and note index as well as differences in half tones to other notes.
+ *
+ * @param midiNote the note (between 0 and 127)
+ */
 function Note(midiNote) {
-    // TODO implement a note data structure
+    if(midiNote < 0 || midiNote > 127) {
+        throw new Error("MIDI notes are only defined between 0 and 127");
+    }
+
+    this.midiNote = midiNote;
+    this.octave = Math.floor(midiNote / 12);
+    this.noteIndex = midiNote % 12;
+
+    this.getDifferenceToNote = function (note) {
+        return this.midiNote - note.midiNote;
+    }
 }
 
 var TuningSystems = {
-    GLEICHSCHWEBEND: new TuningSystem("Gleichschwebend Temperierte Stimmung", )
+    loadFromJson: function (json) {
+        data = JSON.parse(json);
+        return TuningSystems.loadFromObject(data);
+    },
+
+    loadFromObject: function (parsedJson) {
+        parsed = {};
+
+        for(key in parsedJson) {
+            try {
+                var name = parsedJson[key].name;
+                var deviations = parsedJson[key].deviations;
+                parsed[key] = new TuningSystem(name, deviations);
+            } catch (e) {
+                throw new TypeError("Could not data structure containing Tuning System information: " + e);
+            }
+        }
+        return parsed;
+    }
 };
