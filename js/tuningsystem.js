@@ -9,22 +9,12 @@ const CONCERT_PITCH_NOTE = new Note(69);
  * Construct a new TuningSystem.
  *
  * @param name the display name of the temperament
- * @param deviations an array containing 12 numbers which get interpreted as the deviations from the equal temerament in cents
+ * @param deviations an array containing 12 numbers which get interpreted as the deviations from the equal temerament
+ *        in cents, starting from C ranging up to B
  * @param concertPitch [optional] the concert pitch in Hz, default 440
  * @constructor
  */
 function TuningSystem(name, deviations, concertPitch) {
-
-    /**
-     * This function calculates the pitch in Hertz given this tuning system, given the value of a midi note.
-     *
-     * @param midiNote between 0 and 127
-     * @returns the pitch in Hz as a {number}
-     */
-    this.getPitchForMidiNote = function (midiNote) {
-        var parsedNote = new Note(midiNote);
-        return this.getPitchForNote(parsedNote);
-    };
 
     /**
      * This function calculates the pitch in Hertz given this tuning system, given a note object.
@@ -40,11 +30,32 @@ function TuningSystem(name, deviations, concertPitch) {
         return this.concertPitch * frequencyRatio;
     };
 
+    /**
+     * This function calculates the pitch in Hertz given this tuning system, given the value of a midi note.
+     *
+     * @param midiNote between 0 and 127
+     * @returns the pitch in Hz as a {number}
+     */
+    this.getPitchForMidiNote = function (midiNote) {
+        var parsedNote = new Note(midiNote);
+        return this.getPitchForNote(parsedNote);
+    };
 
+    /**
+     * Returns the deviations in an order where the keys are arranged in the order they are on the circle of fifths.
+     *
+     * @param start [optional] the offset of the starting key on the circle of fifths. (i.e. C = 0, D = -2, F = 1)
+     * @returns {Array} the reordered deviations, starting with the key given by start
+     */
     this.getDeviationsInCircleOfFifths = function (start) {
+        if(!start) {
+            start = 0;
+        }
+
         var deviations = [];
         for(i=0; i < 12; i++) {
-            var index = Math.abs((start + i*7) % 12);
+            var index = ((start + i) * 7) % 12;
+            index = index < 0 ? index + 12 : index;
             deviations.push(this.deviations[index])
         }
         return deviations;

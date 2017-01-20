@@ -43,7 +43,7 @@ function prepareChartSeries(temperamtentsDict) {
         var data = temperamtentsDict[key];
         series.push({
             name: data.name,
-            data: data.getDeviationsInCircleOfFifths(3)
+            data: data.getDeviationsInCircleOfFifths(-3)
         });
     }
 

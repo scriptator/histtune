@@ -29,13 +29,29 @@
     <li><a href="javascript:void(play('midi/happy.mid'))">Pharell Williams - Happy</a></li>
 </ul>
 
+<select id="temperamentSelect"></select>
+
 <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
 <script>
+    var systems = undefined;
+
     $(document).ready(function() {
         $.get("../default_tuning_systems.json", function(data) {
             systems = TuningSystems.loadFromObject(data);
-            equal = systems.EQUAL_TEMPERAMENT;
+
+            var options = {};
+            for(key in systems) {
+                options[systems[key].name] = key;
+            }
+
+            var $el = $("#temperamentSelect");
+            $el.empty(); // remove old options
+            $.each(options, function(key,value) {
+                $el.append($("<option></option>")
+                               .attr("value", value).text(key));
+            });
+
             initCharts(systems);
         });
     })

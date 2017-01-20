@@ -23,9 +23,10 @@ function loadRemote(path, callback) {
 }
 
 function play(file) {
+    var temperament = systems[$( "#temperamentSelect" ).val()];
     loadRemote(file, function(data) {
         midiFile = MidiFile(data);
-        synth = Synth(44100);
+        synth = Synth(44100, temperament);
         replayer = Replayer(midiFile, synth);
         audio = AudioPlayer(replayer);
     })
