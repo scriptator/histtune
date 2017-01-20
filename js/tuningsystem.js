@@ -40,6 +40,16 @@ function TuningSystem(name, deviations, concertPitch) {
         return this.concertPitch * frequencyRatio;
     };
 
+
+    this.getDeviationsInCircleOfFifths = function (start) {
+        var deviations = [];
+        for(i=0; i < 12; i++) {
+            var index = Math.abs((start + i*7) % 12);
+            deviations.push(this.deviations[index])
+        }
+        return deviations;
+    };
+
     this.name = name;
     this.concertPitch = concertPitch ? concertPitch : DEFAULT_CONCERT_PITCH_FREQ;
     this.deviations = deviations;
