@@ -2,5 +2,10 @@
   "EQUAL_TEMPERAMENT": {
     "name": "Equal Temperament",
     "deviations": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  },
+
+  "MEANTONE_TEMPERAMENT": {
+    "name": "Meantone Temperament",
+    "deviations": [0, -23.95, -6.84, -30.79, -13.69, 3.42, -20.53, -3.42, -27.37, -10,26, 6.84, -17.11]
   }
 }
