@@ -37,7 +37,7 @@
     var systems = undefined;
 
     $(document).ready(function() {
-        $.get("../default_tuning_systems.json", function(data) {
+        $.get("default_tuning_systems.json", function(data) {
             systems = TuningSystems.loadFromObject(data);
 
             var options = {};
