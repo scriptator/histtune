@@ -27,7 +27,7 @@ function play(file) {
     loadRemote(file, function(data) {
         midiFile = MidiFile(data);
         synth = Synth(44100, temperament);
-        replayer = Replayer(midiFile, synth);
+        replayer = Replayer(midiFile, synth, OrganProgram);
         audio = AudioPlayer(replayer);
     })
 }
