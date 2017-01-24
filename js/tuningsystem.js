@@ -14,7 +14,7 @@ const CONCERT_PITCH_NOTE = new Note(69);
  * @param concertPitch [optional] the concert pitch in Hz, default 440
  * @constructor
  */
-function TuningSystem(name, deviations, concertPitch) {
+function TuningSystem(name, deviations, rootNote, concertPitch) {
 
     /**
      * This function calculates the pitch in Hertz given this tuning system, given a note object.
@@ -42,6 +42,28 @@ function TuningSystem(name, deviations, concertPitch) {
     };
 
     /**
+     * Returns the index of the note in semitones starting from c, which is the root for this tuning system
+     * (i.e. the one which has no deviation from equal temperament)
+     */
+    this.getRootNote = function() {
+        return this.rootNote;
+    };
+
+    /**
+     * Returns the index of the note in semitones starting from c, which is the root for this tuning system
+     * (i.e. the one which has no deviation from equal temperament)
+     */
+    this.setRootNote = function(index) {
+        var diff = index - this.getRootNote();
+
+        // rotate the deviations array until the root note is at the right position
+        while (diff > 0) {
+            this.deviations.push(this.deviations.shift());
+            diff--;
+        }
+    };
+
+    /**
      * Returns the deviations in an order where the keys are arranged in the order they are on the circle of fifths.
      *
      * @param start [optional] the offset of the starting key on the circle of fifths. (i.e. C = 0, D = -2, F = 1)
@@ -62,8 +84,9 @@ function TuningSystem(name, deviations, concertPitch) {
     };
 
     this.name = name;
-    this.concertPitch = concertPitch ? concertPitch : DEFAULT_CONCERT_PITCH_FREQ;
+    this.rootNote = rootNote;
     this.deviations = deviations;
+    this.concertPitch = concertPitch ? concertPitch : DEFAULT_CONCERT_PITCH_FREQ;
 
     if (!deviations.length === 12) {
         throw new Error("Deviations has to be an array containing the deviations from equal temerament in cents.");
@@ -91,18 +114,19 @@ function Note(midiNote) {
 
 var TuningSystems = {
     loadFromJson: function (json) {
-        data = JSON.parse(json);
+        var data = JSON.parse(json);
         return TuningSystems.loadFromObject(data);
     },
 
     loadFromObject: function (parsedJson) {
-        parsed = {};
+        var parsed = {};
 
         for(key in parsedJson) {
             try {
                 var name = parsedJson[key].name;
                 var deviations = parsedJson[key].deviations;
-                parsed[key] = new TuningSystem(name, deviations);
+                var rootNote = parsedJson[key].rootNote;
+                parsed[key] = new TuningSystem(name, deviations, rootNote);
             } catch (e) {
                 throw new TypeError("Could not data structure containing Tuning System information: " + e);
             }

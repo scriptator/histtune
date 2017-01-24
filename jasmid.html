@@ -38,7 +38,7 @@
 
 <div id="temperamentSelect" class="btn-group" data-toggle="buttons"></div>
 
-<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<div id="chartsContainer" style="width: auto; height: 400px; margin: 0 auto"></div>
 
 <script>
     var systems = undefined;
@@ -47,30 +47,34 @@
         return $('#temperamentSelect').find('input:radio:checked').attr("id");
     }
 
+    function renderAvailableTemperaments(tuningSystems, containerId) {
+        var options = {};
+        for(key in tuningSystems) {
+            options[tuningSystems[key].name] = key;
+        }
+
+        var first = true;
+        var $el = $(containerId);
+        $el.empty(); // remove old options
+        $.each(options, function(key,value) {
+            console.log("Creating new option for " + key);
+            var label = $('<label class="btn btn-primary"><input type="radio" name="options"></label>')
+                .append(key);
+            label.children(":first").attr("id", value);
+            if (first) {
+                label.addClass("active");
+                label.children(":first").prop('checked', true);
+                first = false;
+            }
+            $el.append(label);
+        });
+    }
+
     $(document).ready(function() {
         $.get("default_tuning_systems.json", function(data) {
             systems = TuningSystems.loadFromObject(data);
 
-            var options = {};
-            for(key in systems) {
-                options[systems[key].name] = key;
-            }
-
-            var first = true;
-            var $el = $("#temperamentSelect");
-            $el.empty(); // remove old options
-            $.each(options, function(key,value) {
-                var label = $('<label class="btn btn-primary"><input type="radio" name="options"></label>')
-                    .append(key);
-                label.children(":first").attr("id", value);
-                if (first) {
-                    label.addClass("active");
-                    label.children(":first").prop('checked', true);
-                    first = false;
-                }
-                $el.append(label);
-            });
-
+            renderAvailableTemperaments(systems, "#temperamentSelect");
             initCharts(systems);
         });
     })

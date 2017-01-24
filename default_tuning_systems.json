@@ -1,16 +1,19 @@
 {
   "EQUAL_TEMPERAMENT": {
     "name": "Equal Temperament",
-    "deviations": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    "deviations": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    "rootNote": 0
   },
 
   "MEANTONE_TEMPERAMENT": {
     "name": "Meantone Temperament",
-    "deviations": [0, -23.95, -6.84, 10.26, -13.69, 3.42, -20.53, -3.42, -27.37, -10.26, 6.84, -17.11]
+    "deviations": [0, -23.95, -6.84, 10.26, -13.69, 3.42, -20.53, -3.42, -27.37, -10.26, 6.84, -17.11],
+    "rootNote": 0
   },
 
   "PYTHAGOREAN_TUNING": {
     "name": "Pythagorean tuning",
-    "deviations": [-3.91, 9.78, 0, -9.78, 3.91, -5.87, 7.82, -1.96, 11.73, 1.96, -7.82, 5.87]
+    "deviations": [-3.91, 9.78, 0, -9.78, 3.91, -5.87, 7.82, -1.96, 11.73, 1.96, -7.82, 5.87],
+    "rootNote": 2
   }
 }

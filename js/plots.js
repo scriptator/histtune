@@ -6,7 +6,7 @@ function initCharts(temperamentDict) {
 
     var series = prepareChartSeries(temperamentDict);
 
-    Highcharts.chart('container', {
+    Highcharts.chart('chartsContainer', {
         title: {
             text: 'Comparison of temperaments',
             x: -20 //center
