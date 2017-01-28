@@ -1,5 +1,5 @@
 /**
- * Created by johannesvass on 20.01.17.
+ * Created by Johannes Vass, 2017
  */
 
 function initCharts(temperamentDict) {

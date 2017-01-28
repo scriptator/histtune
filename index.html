@@ -5,6 +5,9 @@
 	<script src="js/vendor/jquery-1.12.0.min.js"></script>
 	<script src="js/tuningsystem.js"></script>
     <script src="js/player.js"></script>
+    <script src="js/init.js"></script>
+
+    <!-- Jasmid -->
     <script src="jasmid/stream.js"></script>
     <script src="jasmid/audio.js"></script>
     <script src="jasmid/midifile.js"></script>
@@ -21,7 +24,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
     <!-- Own styles -->
-    <link rel="stylesheet" href="css/jasmid.css">
+    <link rel="stylesheet" href="css/histtune.css">
 </head>
 <body>
 <h1>
@@ -40,44 +43,23 @@
 
 <div id="chartsContainer" style="width: auto; height: 400px; margin: 0 auto"></div>
 
-<script>
-    var systems = undefined;
+<!-- Standar Form -->
+<h4>Select files from your computer</h4>
+<form action="" method="post" enctype="multipart/form-data" id="js-upload-form">
+    <div class="form-inline">
+        <div class="form-group">
+            <input type="file" name="files[]" id="js-upload-files" multiple>
+        </div>
+        <button type="submit" class="btn btn-sm btn-primary" id="js-upload-submit">Upload files</button>
+    </div>
+</form>
 
-    function getCheckedOptionOfButtonGroup(id) {
-        return $('#temperamentSelect').find('input:radio:checked').attr("id");
-    }
 
-    function renderAvailableTemperaments(tuningSystems, containerId) {
-        var options = {};
-        for(key in tuningSystems) {
-            options[tuningSystems[key].name] = key;
-        }
+<!-- Drop Zone -->
+<h4>Or drag and drop files below</h4>
+<div class="upload-drop-zone" id="drop-zone">
+    Just drag and drop files here
+</div>
 
-        var first = true;
-        var $el = $(containerId);
-        $el.empty(); // remove old options
-        $.each(options, function(key,value) {
-            console.log("Creating new option for " + key);
-            var label = $('<label class="btn btn-primary"><input type="radio" name="options"></label>')
-                .append(key);
-            label.children(":first").attr("id", value);
-            if (first) {
-                label.addClass("active");
-                label.children(":first").prop('checked', true);
-                first = false;
-            }
-            $el.append(label);
-        });
-    }
-
-    $(document).ready(function() {
-        $.get("default_tuning_systems.json", function(data) {
-            systems = TuningSystems.loadFromObject(data);
-
-            renderAvailableTemperaments(systems, "#temperamentSelect");
-            initCharts(systems);
-        });
-    })
-</script>
 </body>
 </html>
