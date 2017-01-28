@@ -1,51 +1,83 @@
-<!doctype html>
-<html class="no-js" lang="">
+<!DOCTYPE HTML>
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title></title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf-8">
+	<script src="js/vendor/jquery-1.12.0.min.js"></script>
+	<script src="js/tuningsystem.js"></script>
+    <script src="js/player.js"></script>
+    <script src="jasmid/stream.js"></script>
+    <script src="jasmid/audio.js"></script>
+    <script src="jasmid/midifile.js"></script>
+    <script src="jasmid/replayer.js"></script>
+    <script src="jasmid/synth.js"></script>
 
-    <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <!-- Place favicon.ico in the root directory -->
+    <!-- Charts -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="js/plots.js"></script>
 
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/main.css">
-    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
-    <script src="js/vendor/jquery-1.12.0.min.js"></script>
-    <script type='text/javascript' src='js/midi.js'></script>
-    <script type='text/javascript' src='js/tuningsystem.js'></script>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <!-- Own styles -->
+    <link rel="stylesheet" href="css/jasmid.css">
 </head>
 <body>
-<!--[if lt IE 8]>
-<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
-    your browser</a> to improve your experience.</p>
-<![endif]-->
+<h1>
+    Historische Stimmungssysteme entdecken
+</h1>
+<ul>
+    <li><a href="javascript:void(play('midi/c-kadenz.mid'))">Kadenz in C-Dur</a></li>
+    <li><a href="javascript:void(play('midi/as-kadenz.mid'))">Kadenz in As-Dur</a></li>
+    <li><a href="javascript:void(play('midi/minute_waltz.mid'))">Chopin - Waltz Op.61 (Minute Waltz)</a></li>
+    <li><a href="javascript:void(play('midi/rachmaninov3.mid'))">Rachmaninov - Piano Concerto No.3 (First movement)</a></li>
+    <li><a href="javascript:void(play('midi/intermezzo.mid'))">Brahms - Intermezzo in C-sharp Op-117 No-3</a></li>
+    <li><a href="javascript:void(play('midi/happy.mid'))">Pharell Williams - Happy</a></li>
+</ul>
 
-<!-- Add your site or application content here -->
-<h1>Stimmungssysteme</h1>
+<div id="temperamentSelect" class="btn-group" data-toggle="buttons"></div>
 
-<div class="player">
-    <p>
-        <a href="#example" onclick="MIDIjs.play('midi/alan_jackson_dont_rock_the_jukebox.mid');">Play Rock the Jukebox (Alan Jackson)</a>&nbsp; &nbsp;
-        <a href="#example" onclick="MIDIjs.play('midi/pitchbend.mid');">Play Pitchbend Demo</a>&nbsp;  &nbsp;
-        <a href="#example" onclick="MIDIjs.play('midi/pitchbend_klavier.mid');">Play Pitchbend Klavier</a>&nbsp; &nbsp;
-        <a href="#example" onclick="MIDIjs.play('midi/barbara_streisand_woman_in_love.mid');">Play Woman in Love (Barbara Streisand)</a></p>
-    <p>
-        <a href="#" onclick="MIDIjs.stop();">Stop Playback</a></p>
-
-    <div style="font-size: 71%;font-size: 71%">
-        MIDIjs status: <span id="MIDIjs.message" style="color: green">Initializing ...</span>
-        <div>
-            MIDIjs audio time (s): <span id="MIDIjs.audio_time" style="color: green">-</span></div>
-    </div>
-</div>
-
+<div id="chartsContainer" style="width: auto; height: 400px; margin: 0 auto"></div>
 
 <script>
-    console.log(MIDIjs.get_audio_status());
-</script>
+    var systems = undefined;
 
+    function getCheckedOptionOfButtonGroup(id) {
+        return $('#temperamentSelect').find('input:radio:checked').attr("id");
+    }
+
+    function renderAvailableTemperaments(tuningSystems, containerId) {
+        var options = {};
+        for(key in tuningSystems) {
+            options[tuningSystems[key].name] = key;
+        }
+
+        var first = true;
+        var $el = $(containerId);
+        $el.empty(); // remove old options
+        $.each(options, function(key,value) {
+            console.log("Creating new option for " + key);
+            var label = $('<label class="btn btn-primary"><input type="radio" name="options"></label>')
+                .append(key);
+            label.children(":first").attr("id", value);
+            if (first) {
+                label.addClass("active");
+                label.children(":first").prop('checked', true);
+                first = false;
+            }
+            $el.append(label);
+        });
+    }
+
+    $(document).ready(function() {
+        $.get("default_tuning_systems.json", function(data) {
+            systems = TuningSystems.loadFromObject(data);
+
+            renderAvailableTemperaments(systems, "#temperamentSelect");
+            initCharts(systems);
+        });
+    })
+</script>
 </body>
 </html>
