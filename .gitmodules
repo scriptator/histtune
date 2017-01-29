@@ -1,2 +1,4 @@
 [submodule "jasmid"]
-	branch = feature/temperaments
+    branch = feature/temperaments
+    path = jasmid
+    url = https://github.com/smaug95/jasmid.git
