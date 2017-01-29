@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2017, Matt Westcott & Ben Firshman & Johannes Vass
+    Copyright (c) 2017, Johannes Vass
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -26,36 +26,57 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-var PlayerStates = Object.freeze({STOPPED: 0, PAUSED: 1, PLAYING: 2});
+var PlayerStates = Object.freeze({STOPPED: 0, PLAYING: 1});
 
-
-function Player() {
+/**
+ * A wrapper around the jasmid library for providing the convenience of stopping and calling back if somethings happens
+ * without needing to change the library too much.
+ *
+ * The given callback object is called with the identifier of the current song and its state after a state change took
+ * place. If a stopped player is stopped again, no state change will happen and therefore also no callback.
+ *
+ * @param callback the above described callback
+ * @returns {Player}
+ * @constructor
+ */
+function Player(callback) {
 
     this.state = PlayerStates.STOPPED;
+    this.callback = callback;
 
-    this.getState = function() {
+    this.getState = function () {
         return this.state;
     };
 
-    this.play = function(midiFile) {
+    this.setTemperament = function (temperament) {
+        this.synth.setTemperament(temperament);
+    };
+
+    this.play = function (identifier, midiFile, temperament) {
         // stop currently playing song if there is one
-        if (this.state != PlayerStates.STOPPED) {
+        if (this.state !== PlayerStates.STOPPED) {
             this.stop();
         }
 
         // play the new file
+        this.identifier = identifier;
         this.midiFile = midiFile;
-        this.synth = Synth(44100, getSelectedTemperament());
-        this.replayer = Replayer(this.midiFile, this.synth, OrganProgram);
-        this.audio = AudioPlayer(this.replayer);
+        this.synth = Synth(44100, temperament);
+        var replayer = Replayer(this.midiFile, this.synth, OrganProgram);
+        this.audio = AudioPlayer(replayer, {}, this, this.stop);
+
+        this.state = PlayerStates.PLAYING;
+        this.callback(this.identifier, this.state);
     };
 
-    this.pause = function() {
-
-    };
-
-    this.stop = function() {
-
+    this.stop = function () {
+        if (this.state === PlayerStates.PLAYING) {
+            this.state = PlayerStates.STOPPED;
+            this.audio.stop();
+            this.callback(this.identifier, this.state);
+        } else {
+            console.log("Requested to stop but was not playing: " + this.state);
+        }
     };
 
     return this;

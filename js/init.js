@@ -30,7 +30,7 @@
  */
 
 var systems;
-var player = new Player();
+var player = new Player(playerStateChangeHandler);
 
 /**
  * Entry point of the webapp. All the initialization is triggered here.
@@ -106,8 +106,12 @@ function loadRemote(path, callback) {
 function play(file) {
     loadRemote(file, function(data) {
         var file = new MidiFile(data);
-        player.play(file);
+        player.play(file.toString(), file, getSelectedTemperament());
     })
+}
+
+function playerStateChangeHandler(identifier, state) {
+    console.log(identifier + ": " + state)
 }
 
 
