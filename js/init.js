@@ -120,6 +120,10 @@ function getSelectedTemperament() {
     return systems[option];
 }
 
+function onTemperamentChange(event) {
+    var identifier = event.currentTarget.children[0].id;
+    player.setTemperament(systems[identifier]);
+}
 
 /**
  * This function hacks the available temperaments into a container with a given id. Each tuning system gets rendered
@@ -139,7 +143,7 @@ function renderAvailableTemperaments(tuningSystems, containerId) {
     $el.empty(); // remove old options
     $.each(options, function(key,value) {
         console.log("Creating new option for " + key);
-        var label = $('<label class="btn btn-primary"><input type="radio" name="options"></label>')
+        var label = $('<label class="btn btn-primary" onclick="onTemperamentChange(event)"><input type="radio" name="options"></label>')
             .append(key);
         label.children(":first").attr("id", value);
         if (first) {
