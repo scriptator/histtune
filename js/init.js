@@ -103,10 +103,10 @@ function loadRemote(path, callback) {
 }
 
 
-function play(file) {
+function play(identifier, file) {
     loadRemote(file, function(data) {
         var file = new MidiFile(data);
-        player.play(file.toString(), file, getSelectedTemperament());
+        player.play(identifier, file, getSelectedTemperament());
     })
 }
 

@@ -16,4 +16,4 @@ for making XHR requests. For development I suggest the following very simple sol
 
 * **cd** into the repository root
 * execute: **python3 -m http.server**
-* --> the website will be served under http://localhost:8080
+* --> the website will be served under http://localhost:8000

@@ -25,19 +25,21 @@
 
     <!-- Own styles -->
     <link rel="stylesheet" href="css/histtune.css">
+    <link rel="shortcut icon" href="flat-sign.ico">
+
+    <title>Historische Stimmungssysteme</title>
 </head>
 <body>
 <h1>
     Historische Stimmungssysteme entdecken
 </h1>
 <ul id="midi-file-list">
-    <li><a href="javascript:void(play('midi/c-kadenz.mid'))">Kadenz in C-Dur</a></li>
-    <li><a href="javascript:void(play('midi/as-kadenz.mid'))">Kadenz in As-Dur</a></li>
-    <li><a href="javascript:void(play('midi/minute_waltz.mid'))">Chopin - Waltz Op.61 (Minute Waltz)</a></li>
-    <li><a href="javascript:void(play('midi/rachmaninov3.mid'))">Rachmaninov - Piano Concerto No.3 (First movement)</a></li>
-    <li><a href="javascript:void(play('midi/liszt_etude_12_exercices_9_as_dur.mid'))">Liszt Etüde 12 in As-Dur</a></li>
-    <li><a href="javascript:void(play('midi/intermezzo.mid'))">Brahms - Intermezzo in C-sharp Op-117 No-3</a></li>
-    <li><a href="javascript:void(play('midi/happy.mid'))">Pharell Williams - Happy</a></li>
+    <li><a href="javascript:void(play('c-dur-kadenz', 'midi/c-kadenz.mid'))">Kadenz in C-Dur</a></li>
+    <li><a href="javascript:void(play('as-dur-kadenz', 'midi/as-kadenz.mid'))">Kadenz in As-Dur</a></li>
+    <li><a href="javascript:void(play('liszt_etude_12', 'midi/liszt_etude_12_exercices_9_as_dur.mid'))">Liszt Etüde 12 in As-Dur</a></li>
+    <li><a href="javascript:void(play('chopin-waltz-61', 'midi/minute_waltz.mid'))">Chopin - Waltz Op.61 (Minute Waltz)</a></li>
+    <li><a href="javascript:void(play('rachmaninov-concerto-3', 'midi/rachmaninov3.mid'))">Rachmaninov - Piano Concerto No.3 (First movement)</a></li>
+    <li><a href="javascript:void(play('brahms-intermezzo', 'midi/intermezzo.mid'))">Brahms - Intermezzo in C-sharp Op-117 No-3</a></li>
 </ul>
 
 <div id="temperamentSelect" class="btn-group" data-toggle="buttons"></div>
