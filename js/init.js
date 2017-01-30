@@ -31,6 +31,7 @@
 
 var systems;
 var player = new Player(playerStateChangeHandler);
+var userMidiFiles = {};
 
 /**
  * Entry point of the webapp. All the initialization is triggered here.
@@ -53,22 +54,18 @@ function initDragAndDrop() {
     var dropZone = document.getElementById('drop-zone');
     var uploadForm = document.getElementById('js-upload-form');
 
-    var startUpload = function(files) {
-        console.log(files)
-    };
-
     uploadForm.addEventListener('submit', function(e) {
         var uploadFiles = document.getElementById('js-upload-files').files;
         e.preventDefault();
 
-        startUpload(uploadFiles)
+        addMIDIFilesToList(uploadFiles)
     });
 
     dropZone.ondrop = function(e) {
         e.preventDefault();
         this.className = 'upload-drop-zone';
 
-        startUpload(e.dataTransfer.files)
+        addMIDIFilesToList(e.dataTransfer.files)
     };
 
     dropZone.ondragover = function() {
@@ -80,6 +77,35 @@ function initDragAndDrop() {
         this.className = 'upload-drop-zone';
         return false;
     }
+}
+
+/**
+ * Loads a list of files into the list of MIDI files displayed at the top of the page.
+ *
+ * @param files an array of files
+ */
+function addMIDIFilesToList(files) {
+    for (var i=0; i < files.length; i++) {
+        var file = files[i];
+        var reader = new FileReader();
+        reader.onload = function () {
+            userMidiFiles[file.name] = reader.result;
+            renderUserMidiFiles();
+        };
+        reader.readAsBinaryString(file);
+    }
+}
+
+/**
+ * Rerenders the whole list of user-provided midi files from the variable userMidiFiles
+ */
+function renderUserMidiFiles() {
+    var el = $("#user-midi-file-list");
+    el.empty(); // remove old entries
+    $.each(userMidiFiles, function(filename, data) {
+        var entry = $('<li><a href="javascript:void(play(&quot;' + filename + '&quot;))">' + filename + '</a></li>');
+        el.append(entry);
+    });
 }
 
 function loadRemote(path, callback) {
@@ -104,10 +130,16 @@ function loadRemote(path, callback) {
 
 
 function play(identifier, file) {
-    loadRemote(file, function(data) {
-        var file = new MidiFile(data);
-        player.play(identifier, file, getSelectedTemperament());
-    })
+    if (file) {
+        loadRemote(file, startPlaying);
+    } else {
+        startPlaying(userMidiFiles[identifier])
+    }
+
+    function startPlaying(data) {
+        var midiFile = new MidiFile(data);
+        player.play(identifier, midiFile, getSelectedTemperament());
+    }
 }
 
 function playerStateChangeHandler(identifier, state) {

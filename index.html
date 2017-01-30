@@ -33,6 +33,7 @@
 <h1>
     Historische Stimmungssysteme entdecken
 </h1>
+
 <ul id="midi-file-list">
     <li><a href="javascript:void(play('c-dur-kadenz', 'midi/c-kadenz.mid'))">Kadenz in C-Dur</a></li>
     <li><a href="javascript:void(play('as-dur-kadenz', 'midi/as-kadenz.mid'))">Kadenz in As-Dur</a></li>
@@ -42,27 +43,30 @@
     <li><a href="javascript:void(play('brahms-intermezzo', 'midi/intermezzo.mid'))">Brahms - Intermezzo in C-sharp Op-117 No-3</a></li>
 </ul>
 
+<ul id="user-midi-file-list">
+</ul>
+
+
 <div id="temperamentSelect" class="btn-group" data-toggle="buttons"></div>
 
 <div id="chartsContainer" style="width: auto; height: 400px; margin: 0 auto"></div>
 
-<!-- Standar Form -->
-<h4>Select files from your computer</h4>
+<!-- Drop Zone -->
+<h4>Ein eigenes MIDI-File hierher ziehen</h4>
+<div class="upload-drop-zone" id="drop-zone">
+    Just drag and drop files here
+</div>
+
+<!-- Form for uploading MIDI Files -->
+<h4>Ein eigenes MIDI File laden:</h4>
 <form action="" method="post" enctype="multipart/form-data" id="js-upload-form">
     <div class="form-inline">
         <div class="form-group">
             <input type="file" name="files[]" id="js-upload-files" multiple>
         </div>
-        <button type="submit" class="btn btn-sm btn-primary" id="js-upload-submit">Upload files</button>
+        <button type="submit" class="btn btn-sm btn-primary" id="js-upload-submit">MIDI laden</button>
     </div>
 </form>
-
-
-<!-- Drop Zone -->
-<h4>Or drag and drop files below</h4>
-<div class="upload-drop-zone" id="drop-zone">
-    Just drag and drop files here
-</div>
 
 </body>
 </html>
