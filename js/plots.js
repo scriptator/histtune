@@ -8,7 +8,7 @@ function initCharts(temperamentDict) {
 
     Highcharts.chart('chartsContainer', {
         title: {
-            text: 'Comparison of temperaments',
+            text: 'Vergleich der Stimmungssysteme',
             x: -20 //center
         },
         xAxis: {
@@ -16,7 +16,7 @@ function initCharts(temperamentDict) {
         },
         yAxis: {
             title: {
-                text: 'Deviation from Equal Temperament in Cents'
+                text: 'Abweichungen von der gleichschwebend temp. Stimmung in Cent'
             },
             plotLines: [{
                 value: 0,
