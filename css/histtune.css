@@ -1,11 +1,56 @@
-/* layout.css Style */
+/* basic styling */
+h1, h2, h3 {
+    margin: 0 0 0.5em 0;
+}
+
+h1, h2, h3, .sans, button {
+    font-family: museo-sans, "Helvetica Neue", sans-serif;
+    color: black;
+}
+
+body {
+    line-height: 1.5;
+    font-family: museo_slab500, Times, serif;
+}
+
+.aligned {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1230px;
+    width: 100%;
+}
+
+section {
+    padding: 0.5em 1em 0.5em 1em;
+}
+
+@font-face {
+    font-family: 'museo_slab500';
+    src: url('../fonts/Museo_Slab_500_2-webfont.eot');
+    src: url('../fonts/Museo_Slab_500_2-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/Museo_Slab_500_2-webfont.woff2') format('woff2'),
+    url('../fonts/Museo_Slab_500_2-webfont.woff') format('woff'),
+    url('../fonts/Museo_Slab_500_2-webfont.ttf') format('truetype'),
+    url('../fonts/Museo_Slab_500_2-webfont.svg#museo_slab500') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.chart {
+    height: 400px;
+}
+
+#footer-frame {
+    background-color: slategray;
+    color: white;
+}
+
 .upload-drop-zone {
     height: 200px;
     border-width: 2px;
     margin-bottom: 20px;
 }
 
-/* skin.css Style*/
 .upload-drop-zone {
     color: #ccc;
     border-style: dashed;

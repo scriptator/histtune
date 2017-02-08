@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<script src="js/vendor/jquery-1.12.0.min.js"></script>
+    <script src="js/tuningsystem.js"></script>
     <script src="js/init.js"></script>
 
     <!-- Bootstrap -->
@@ -13,12 +14,20 @@
     <link rel="stylesheet" href="css/histtune.css">
     <link rel="shortcut icon" href="favicon.png">
 
-    <title>Histtune Startseite</title>
+    <!-- Charts -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="js/plots.js"></script>
+
+    <title>Histtune Erklärungen</title>
 </head>
 <body>
 <section id="header-frame">
 </section>
 
+<section>
+    <div id="chartsContainer" class="aligned chart"></div>
+</section>
 
 <section id="footer-frame">
 </section>

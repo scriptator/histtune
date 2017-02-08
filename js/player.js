@@ -24,6 +24,9 @@
     ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
     (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+    Drag&Dop Functionality taken from:
+    http://bootsnipp.com/snippets/featured/bootstrap-drag-and-drop-upload
  */
 
 var PlayerStates = Object.freeze({STOPPED: 0, PLAYING: 1});
@@ -82,35 +85,153 @@ function Player(callback) {
     return this;
 }
 
+var player = new Player(playerStateChangeHandler);
+var userMidiFiles = {};
+
+/**
+ * Load the player functionality.
+ */
+$(document).ready(function() {
+    initDragAndDrop();
+
+    initTuningSystems(function(systems) {
+        renderAvailableTemperaments(systems, "#temperamentSelect");
+    });
+});
+
+function initDragAndDrop() {
+    var dropZone = document.getElementById('drop-zone');
+    var uploadForm = document.getElementById('js-upload-form');
+
+    uploadForm.addEventListener('submit', function(e) {
+        var uploadFiles = document.getElementById('js-upload-files').files;
+        e.preventDefault();
+
+        addMIDIFilesToList(uploadFiles)
+    });
+
+    dropZone.ondrop = function(e) {
+        e.preventDefault();
+        this.className = 'upload-drop-zone';
+
+        addMIDIFilesToList(e.dataTransfer.files)
+    };
+
+    dropZone.ondragover = function() {
+        this.className = 'upload-drop-zone drop';
+        return false;
+    };
+
+    dropZone.ondragleave = function() {
+        this.className = 'upload-drop-zone';
+        return false;
+    }
+}
+
+/**
+ * Loads a list of files into the list of MIDI files displayed at the top of the page.
+ *
+ * @param files an array of files
+ */
+function addMIDIFilesToList(files) {
+    for (var i=0; i < files.length; i++) {
+        var file = files[i];
+        var reader = new FileReader();
+        reader.onload = function () {
+            userMidiFiles[file.name] = reader.result;
+            renderUserMidiFiles();
+        };
+        reader.readAsBinaryString(file);
+    }
+}
+
+/**
+ * Rerenders the whole list of user-provided midi files from the variable userMidiFiles
+ */
+function renderUserMidiFiles() {
+    var el = $("#user-midi-file-list");
+    el.empty(); // remove old entries
+    $.each(userMidiFiles, function(filename, data) {
+        var entry = $('<li><a href="javascript:void(play(&quot;' + filename + '&quot;))">' + filename + '</a></li>');
+        el.append(entry);
+    });
+}
+
+function loadRemote(path, callback) {
+    var fetch = new XMLHttpRequest();
+    fetch.open('GET', path);
+    fetch.overrideMimeType("text/plain; charset=x-user-defined");
+    fetch.onreadystatechange = function() {
+        if(this.readyState == 4 && this.status == 200) {
+            /* munge response into a binary string */
+            var t = this.responseText || "" ;
+            var ff = [];
+            var mx = t.length;
+            var scc= String.fromCharCode;
+            for (var z = 0; z < mx; z++) {
+                ff[z] = scc(t.charCodeAt(z) & 255);
+            }
+            callback(ff.join(""));
+        }
+    };
+    fetch.send();
+}
 
 
+function play(identifier, file) {
+    if (file) {
+        loadRemote(file, startPlaying);
+    } else {
+        startPlaying(userMidiFiles[identifier])
+    }
 
-// if(FileReader){
-//     function cancelEvent(e){
-//         e.stopPropagation();
-//         e.preventDefault();
-//     }
-//     document.addEventListener('dragenter', cancelEvent, false);
-//     document.addEventListener('dragover', cancelEvent, false);
-//     document.addEventListener('drop', function(e){
-//         cancelEvent(e);
-//         for(var i=0;i<e.dataTransfer.files.length;++i){
-//             var
-//                 file = e.dataTransfer.files[i]
-//                 ;
-//             if(file.type != 'audio/midi'){
-//                 continue;
-//             }
-//             var
-//                 reader = new FileReader()
-//                 ;
-//             reader.onload = function(e){
-//                 midiFile = MidiFile(e.target.result);
-//                 synth = Synth(44100, getSelectedTemperament());
-//                 replayer = Replayer(midiFile, synth, OrganProgram);
-//                 audio = AudioPlayer(replayer);
-//             };
-//             reader.readAsBinaryString(file);
-//         }
-//     }, false);
-// }
+    function startPlaying(data) {
+        var midiFile = new MidiFile(data);
+        player.play(identifier, midiFile, getSelectedTemperament());
+    }
+}
+
+function playerStateChangeHandler(identifier, state) {
+    console.log(identifier + ": " + state)
+}
+
+
+function getSelectedTemperament() {
+    var option = $('#temperamentSelect').find('input:radio:checked').attr("id");
+    return systems[option];
+}
+
+function onTemperamentChange(event) {
+    var identifier = event.currentTarget.children[0].id;
+    player.setTemperament(systems[identifier]);
+}
+
+/**
+ * This function hacks the available temperaments into a container with a given id. Each tuning system gets rendered
+ * as a Radio, styled like a bootstrap button.
+ *
+ * @param tuningSystems a dict of (identifier, TuningSystem)
+ * @param containerId the id of the container to display the data in
+ */
+function renderAvailableTemperaments(tuningSystems, containerId) {
+    var options = {};
+    for(key in tuningSystems) {
+        options[tuningSystems[key].name] = key;
+    }
+
+    var first = true;
+    var $el = $(containerId);
+    $el.empty(); // remove old options
+    $.each(options, function(key,value) {
+        console.log("Creating new option for " + key);
+        var label = $('<label class="btn btn-primary" onclick="onTemperamentChange(event)"><input type="radio" name="options"></label>')
+            .append(key);
+        label.children(":first").attr("id", value);
+        if (first) {
+            label.addClass("active");
+            label.children(":first").prop('checked', true);
+            first = false;
+        }
+        $el.append(label);
+    });
+}

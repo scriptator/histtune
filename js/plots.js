@@ -2,6 +2,12 @@
  * Created by Johannes Vass, 2017
  */
 
+$(document).ready(function() {
+    initTuningSystems(function(systems) {
+        initCharts(systems);
+    });
+});
+
 function initCharts(temperamentDict) {
 
     var series = prepareChartSeries(temperamentDict);
@@ -25,7 +31,11 @@ function initCharts(temperamentDict) {
             }]
         },
         tooltip: {
-            valueSuffix: ' cents'
+            valueSuffix: ' Cent',
+            split: true,
+            distance: 30,
+            padding: 5,
+            valueDecimals: 1
         },
         legend: {
             layout: 'vertical',

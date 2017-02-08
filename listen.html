@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<script src="js/vendor/jquery-1.12.0.min.js"></script>
+	<script src="js/tuningsystem.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/init.js"></script>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <!-- Own styles -->
+    <link rel="stylesheet" href="css/histtune.css">
+    <link rel="shortcut icon" href="favicon.png">
+
+    <!-- Jasmid -->
+    <script src="jasmid/stream.js"></script>
+    <script src="jasmid/audio.js"></script>
+    <script src="jasmid/midifile.js"></script>
+    <script src="jasmid/replayer.js"></script>
+    <script src="jasmid/synth.js"></script>
+
+    <title>Histtune Hören</title>
+</head>
+<body>
+<section id="header-frame">
+</section>
+
+<section>
+    <div class="section-content aligned">
+        <ul id="midi-file-list">
+            <li><a href="javascript:void(play('c-dur-kadenz', 'midi/c-kadenz.mid'))">Kadenz in C-Dur</a></li>
+            <li><a href="javascript:void(play('as-dur-kadenz', 'midi/as-kadenz.mid'))">Kadenz in As-Dur</a></li>
+            <li><a href="javascript:void(play('liszt_etude_12', 'midi/liszt_etude_12_exercices_9_as_dur.mid'))">Liszt Etüde 12 in As-Dur</a></li>
+            <li><a href="javascript:void(play('chopin-waltz-61', 'midi/minute_waltz.mid'))">Chopin - Waltz Op.61 (Minute Waltz)</a></li>
+            <li><a href="javascript:void(play('rachmaninov-concerto-3', 'midi/rachmaninov3.mid'))">Rachmaninov - Piano Concerto No.3 (First movement)</a></li>
+            <li><a href="javascript:void(play('brahms-intermezzo', 'midi/intermezzo.mid'))">Brahms - Intermezzo in C-sharp Op-117 No-3</a></li>
+        </ul>
+
+        <ul id="user-midi-file-list">
+        </ul>
+
+        <div id="temperamentSelect" class="btn-group" data-toggle="buttons"></div>
+    </div>
+</section>
+
+<section>
+    <div class="section-content aligned">
+        <!-- Drop Zone -->
+        <h4>Ein eigenes MIDI-File hierher ziehen</h4>
+        <div class="upload-drop-zone" id="drop-zone">
+            Just drag and drop files here
+        </div>
+
+        <!-- Form for uploading MIDI Files -->
+        <h4>Ein eigenes MIDI File laden:</h4>
+        <form action="" method="post" enctype="multipart/form-data" id="js-upload-form">
+            <div class="form-inline">
+                <div class="form-group">
+                    <input type="file" name="files[]" id="js-upload-files" multiple>
+                </div>
+                <button type="submit" class="btn btn-sm btn-primary" id="js-upload-submit">MIDI laden</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<section id="footer-frame">
+</section>
+
+</body>
+</html>
