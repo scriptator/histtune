@@ -15,5 +15,11 @@
     "name": "Pythagoreische Stimmung",
     "deviations": [-3.91, 9.78, 0, -9.78, 3.91, -5.87, 7.82, -1.96, 11.73, 1.96, -7.82, 5.87],
     "rootNote": 2
+  },
+
+  "JUST_INTONATION": {
+    "name": "Reine Stimmung",
+    "deviations": [0, 11.73, 3.91, 15.64, -13.69, -1.96, -9.78, 1.96, 13.69, -15.64, 17.6, -11.73],
+    "rootNote": 0
   }
 }
