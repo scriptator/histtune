@@ -2,12 +2,6 @@
  * Created by Johannes Vass, 2017
  */
 
-$(document).ready(function() {
-    initTuningSystems(function(systems) {
-        initCharts(systems);
-    });
-});
-
 function initCharts(temperamentDict) {
 
     var series = prepareChartSeries(temperamentDict);

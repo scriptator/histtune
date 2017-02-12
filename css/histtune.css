@@ -24,6 +24,10 @@ section {
     padding: 0.5em 1em 0.5em 1em;
 }
 
+.row {
+    margin: 0 !important;
+}
+
 @font-face {
     font-family: 'museo_slab500';
     src: url('../fonts/Museo_Slab_500_2-webfont.eot');
@@ -36,11 +40,15 @@ section {
     font-style: normal;
 }
 
+#charts-section {
+    background-color: lightcoral;
+}
+
 .chart {
     height: 400px;
 }
 
-#footer-frame {
+#footer-section {
     background-color: slategray;
     color: white;
 }
