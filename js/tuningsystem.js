@@ -127,7 +127,7 @@ function TuningSystem(name, deviations, rootNote, concertPitch) {
         for(i=0; i < 12; i++) {
             var index = ((start + i) * 7) % 12;
             index = index < 0 ? index + 12 : index;
-            deviations.push(this.deviations[index])
+            deviations.push(this.shiftedDeviations[index])
         }
         return deviations;
     };

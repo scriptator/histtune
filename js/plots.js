@@ -12,7 +12,7 @@ function initCharts(temperamentDict) {
 
     var series = prepareChartSeries(temperamentDict);
 
-    Highcharts.chart('chartsContainer', {
+    chart = Highcharts.chart('chartsContainer', {
         title: {
             text: 'Vergleich der Stimmungssysteme',
             x: -20 //center

@@ -28,20 +28,8 @@
 <section id="header-frame">
 </section>
 
-<section>
-    <div class="section-content aligned">
-        <ul id="midi-file-list">
-            <li><a href="javascript:void(play('c-dur-kadenz', 'midi/c-kadenz.mid'))">Kadenz in C-Dur</a></li>
-            <li><a href="javascript:void(play('as-dur-kadenz', 'midi/as-kadenz.mid'))">Kadenz in As-Dur</a></li>
-            <li><a href="javascript:void(play('liszt_etude_12', 'midi/liszt_etude_12_exercices_9_as_dur.mid'))">Liszt Etüde 12 in As-Dur</a></li>
-            <li><a href="javascript:void(play('chopin-waltz-61', 'midi/minute_waltz.mid'))">Chopin - Waltz Op.61 (Minute Waltz)</a></li>
-            <li><a href="javascript:void(play('rachmaninov-concerto-3', 'midi/rachmaninov3.mid'))">Rachmaninov - Piano Concerto No.3 (First movement)</a></li>
-            <li><a href="javascript:void(play('brahms-intermezzo', 'midi/intermezzo.mid'))">Brahms - Intermezzo in C-sharp Op-117 No-3</a></li>
-        </ul>
-
-        <ul id="user-midi-file-list">
-        </ul>
-
+<section class="temperaments">
+    <div class="section-content aligned container">
         <div id="temperamentSelect" class="radio-button-select btn-group btn-group-justified" data-toggle="buttons"></div>
         <div id="rootNoteSelect" class="radio-button-select btn-group btn-group-justified" data-toggle="buttons">
             <label class="btn btn-primary" onclick="getSelectedTemperament().shift(0)"><input name="noteSel" id="NOTE_0" type="radio">C</label>
@@ -57,27 +45,43 @@
             <label class="btn btn-primary" onclick="getSelectedTemperament().shift(10)"><input name="noteSel" id="NOTE_10" type="radio">B♭</label>
             <label class="btn btn-primary" onclick="getSelectedTemperament().shift(11)"><input name="noteSel" id="NOTE_11" type="radio">H</label>
         </div>
-    </div>
+        </div>
 </section>
 
-<section>
-    <div class="section-content aligned">
-        <!-- Drop Zone -->
-        <h4>Ein eigenes MIDI-File hierher ziehen</h4>
-        <div class="upload-drop-zone" id="drop-zone">
-            Just drag and drop files here
+<section class="midi-files">
+    <div class="section-content aligned container">
+        <div class="row">
+            <ul id="midi-file-list" class="col-md-6">
+                <li><a href="javascript:void(play('c-dur-kadenz', 'midi/c-kadenz.mid'))">Kadenz in C-Dur</a></li>
+                <li><a href="javascript:void(play('as-dur-kadenz', 'midi/as-kadenz.mid'))">Kadenz in As-Dur</a></li>
+                <li><a href="javascript:void(play('liszt_etude_12', 'midi/liszt_etude_12_exercices_9_as_dur.mid'))">Liszt Etüde 12 in As-Dur</a></li>
+                <li><a href="javascript:void(play('chopin-waltz-61', 'midi/minute_waltz.mid'))">Chopin - Waltz Op.61 (Minute Waltz) in As-Dur</a></li>
+                <li><a href="javascript:void(play('rachmaninov-concerto-3', 'midi/rachmaninov3.mid'))">Rachmaninov - Piano Concerto No.3 in d-Moll</a></li>
+                <li><a href="javascript:void(play('brahms-intermezzo', 'midi/intermezzo.mid'))">Brahms - Intermezzo in Cis-Dur Op-117 No-3</a></li>
+            </ul>
+
+            <ul id="user-midi-file-list" class="col-md-6"></ul>
         </div>
 
-        <!-- Form for uploading MIDI Files -->
-        <h4>Ein eigenes MIDI File laden:</h4>
-        <form action="" method="post" enctype="multipart/form-data" id="js-upload-form">
-            <div class="form-inline">
-                <div class="form-group">
-                    <input type="file" name="files[]" id="js-upload-files" multiple>
+        <div class="row">
+            <!-- Drop Zone -->
+            <div class="collapse-group">
+                <p><a class="btn btn-default" data-toggle="collapse" data-target="#upload-collapsed-container">Eigene MIDI-Files laden &raquo;</a></p>
+                <div id="upload-collapsed-container" class="collapse">
+                    <div class="upload-drop-zone" id="drop-zone">
+                        Just drag and drop files here
+                    </div>
+                    <form action="" method="post" enctype="multipart/form-data" id="js-upload-form">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <input type="file" name="files[]" id="js-upload-files" multiple>
+                            </div>
+                            <button type="submit" class="btn btn-sm btn-primary" id="js-upload-submit">MIDI laden</button>
+                        </div>
+                    </form>
                 </div>
-                <button type="submit" class="btn btn-sm btn-primary" id="js-upload-submit">MIDI laden</button>
             </div>
-        </form>
+        </div>
     </div>
 </section>
 
