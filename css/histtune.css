@@ -21,7 +21,7 @@ body {
 }
 
 section {
-    padding: 0.5em 1em 0.5em 1em;
+    padding: 1em;
 }
 
 .row {
@@ -40,8 +40,12 @@ section {
     font-style: normal;
 }
 
+#midi-files-section {
+    background-color: #c3ceb8;
+}
+
 #charts-section {
-    background-color: lightcoral;
+    background-color: white;
 }
 
 .chart {
@@ -64,9 +68,9 @@ section {
 }
 
 .upload-drop-zone {
-    color: #ccc;
+    color: #575757;
     border-style: dashed;
-    border-color: #ccc;
+    border-color: #575757;
     line-height: 200px;
     text-align: center
 }
