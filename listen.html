@@ -42,7 +42,21 @@
         <ul id="user-midi-file-list">
         </ul>
 
-        <div id="temperamentSelect" class="btn-group" data-toggle="buttons"></div>
+        <div id="temperamentSelect" class="radio-button-select btn-group btn-group-justified" data-toggle="buttons"></div>
+        <div id="rootNoteSelect" class="radio-button-select btn-group btn-group-justified" data-toggle="buttons">
+            <label class="btn btn-primary" onclick="getSelectedTemperament().shift(0)"><input name="noteSel" id="NOTE_0" type="radio">C</label>
+            <label class="btn btn-primary" onclick="getSelectedTemperament().shift(1)"><input name="noteSel" id="NOTE_1" type="radio">C#</label>
+            <label class="btn btn-primary" onclick="getSelectedTemperament().shift(2)"><input name="noteSel" id="NOTE_2" type="radio">D</label>
+            <label class="btn btn-primary" onclick="getSelectedTemperament().shift(3)"><input name="noteSel" id="NOTE_3" type="radio">E♭</label>
+            <label class="btn btn-primary" onclick="getSelectedTemperament().shift(4)"><input name="noteSel" id="NOTE_4" type="radio">E</label>
+            <label class="btn btn-primary" onclick="getSelectedTemperament().shift(5)"><input name="noteSel" id="NOTE_5" type="radio">F</label>
+            <label class="btn btn-primary" onclick="getSelectedTemperament().shift(6)"><input name="noteSel" id="NOTE_6" type="radio">F#</label>
+            <label class="btn btn-primary" onclick="getSelectedTemperament().shift(7)"><input name="noteSel" id="NOTE_7" type="radio">G</label>
+            <label class="btn btn-primary" onclick="getSelectedTemperament().shift(8)"><input name="noteSel" id="NOTE_8" type="radio">G#</label>
+            <label class="btn btn-primary" onclick="getSelectedTemperament().shift(9)"><input name="noteSel" id="NOTE_9" type="radio">A</label>
+            <label class="btn btn-primary" onclick="getSelectedTemperament().shift(10)"><input name="noteSel" id="NOTE_10" type="radio">B♭</label>
+            <label class="btn btn-primary" onclick="getSelectedTemperament().shift(11)"><input name="noteSel" id="NOTE_11" type="radio">H</label>
+        </div>
     </div>
 </section>
 

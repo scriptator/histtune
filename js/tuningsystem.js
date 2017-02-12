@@ -29,12 +29,17 @@
 const DEFAULT_CONCERT_PITCH_FREQ = 440; // Hz
 const CONCERT_PITCH_NOTE = new Note(69);
 
+
+var Notes = Object.freeze({C: 0, Cis: 1, D: 2, Dis: 3, E: 4, F: 5, Fis: 6, G: 7, Gis: 8, A: 9, Ais: 10, B: 11});
+
 /**
  * Construct a new TuningSystem.
  *
  * @param name the display name of the temperament
  * @param deviations an array containing 12 numbers which get interpreted as the deviations from the equal temerament
  *        in cents, starting from C ranging up to B
+ * @param rootNote the base note of the tuning system given as the index of the note in semitones starting from c.
+ *        If set to such a number, the system is expected to be sensibly transformable to other bases
  * @param concertPitch [optional] the concert pitch in Hz, default 440
  * @constructor
  */
@@ -47,7 +52,7 @@ function TuningSystem(name, deviations, rootNote, concertPitch) {
      * @returns the pitch in Hz as a {number}
      */
     this.getPitchForNote = function (note) {
-        var deviation = this.deviations[note.noteIndex]; // deviation in cents
+        var deviation = this.shiftedDeviations[note.noteIndex]; // deviation in cents
         var differenceFromCP = note.getDifferenceToNote(CONCERT_PITCH_NOTE); // difference in half tones
 
         var frequencyRatio = Math.pow(2, (differenceFromCP * 100 + deviation) / 1200);
@@ -66,25 +71,45 @@ function TuningSystem(name, deviations, rootNote, concertPitch) {
     };
 
     /**
-     * Returns the index of the note in semitones starting from c, which is the root for this tuning system
-     * (i.e. the one which has no deviation from equal temperament)
+     * Returns the index of the note in semitones starting from c, which is currently the root for this tuning system
+     * (i.e. the one which has no deviation from equal temperament) or undefined iff the tuning system is not shiftable.
      */
-    this.getRootNote = function() {
-        return this.rootNote;
+    this.getCurrentRootNote = function() {
+        return this.currentRootNote;
     };
 
     /**
-     * Returns the index of the note in semitones starting from c, which is the root for this tuning system
-     * (i.e. the one which has no deviation from equal temperament)
+     * Returns whether this tuning system can be translated such that it has a different note as the root by simply
+     * shifting the deviation array around.
      */
-    this.setRootNote = function(index) {
-        var diff = index - this.getRootNote();
+    this.isShiftable = function() {
+        return this.originalRootNote !== undefined;
+    };
 
-        // rotate the deviations array until the root note is at the right position
-        while (diff > 0) {
-            this.deviations.push(this.deviations.shift());
-            diff--;
+    /**
+     * Shifts the tuning system to another root.
+     *
+     * @param note a number between 0 and 11 which sets adapts the tuning system such that it has this note as its root
+     */
+    this.shift = function(note) {
+        if (!this.isShiftable()) {
+            return;
         }
+
+        if (note < 0 || note >= 12) {
+            console.log("Could not shift tuning system because note " + note + " is unknown");
+            return;
+        }
+
+        var diff = this.originalRootNote - note;
+        diff = diff >= 0 ? diff : 12 + diff;
+
+        // copy the deviations over to the shifted array
+        for (var i=0; i < 12; i++) {
+            this.shiftedDeviations[i] = this.deviations[(diff + i) % 12]
+        }
+
+        this.currentRootNote = note;
     };
 
     /**
@@ -107,14 +132,19 @@ function TuningSystem(name, deviations, rootNote, concertPitch) {
         return deviations;
     };
 
-    this.name = name;
-    this.rootNote = rootNote;
-    this.deviations = deviations;
-    this.concertPitch = concertPitch ? concertPitch : DEFAULT_CONCERT_PITCH_FREQ;
-
     if (!deviations.length === 12) {
         throw new Error("Deviations has to be an array containing the deviations from equal temerament in cents.");
     }
+
+    this.name = name;
+
+    this.originalRootNote = rootNote;
+    this.deviations = deviations;
+
+    this.currentRootNote = rootNote;
+    this.shiftedDeviations = deviations.slice();
+
+    this.concertPitch = concertPitch ? concertPitch : DEFAULT_CONCERT_PITCH_FREQ;
 
     return this;
 }
@@ -154,7 +184,7 @@ var TuningSystems = {
                 var rootNote = parsedJson[key].rootNote;
                 parsed[key] = new TuningSystem(name, deviations, rootNote);
             } catch (e) {
-                throw new TypeError("Could not data structure containing Tuning System information: " + e);
+                throw new TypeError("Could not parse data structure containing Tuning System information: " + e);
             }
         }
         return parsed;

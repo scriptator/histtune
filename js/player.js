@@ -52,7 +52,11 @@ function Player(callback) {
     };
 
     this.setTemperament = function (temperament) {
-        this.synth.setTemperament(temperament);
+        if (this.synth) {
+            this.synth.setTemperament(temperament);
+        } else {
+            this.synth = Synth(44100, temperament);
+        }
     };
 
     this.play = function (identifier, midiFile, temperament) {
@@ -96,6 +100,7 @@ $(document).ready(function() {
 
     initTuningSystems(function(systems) {
         renderAvailableTemperaments(systems, "#temperamentSelect");
+        updateTemperamentShiftRadio(getSelectedTemperament());
     });
 });
 
@@ -195,7 +200,9 @@ function playerStateChangeHandler(identifier, state) {
     console.log(identifier + ": " + state)
 }
 
-
+/**
+ * Returns the identifier of the temperament which is currently selected in the radio with id temperamentSelect
+ */
 function getSelectedTemperament() {
     var option = $('#temperamentSelect').find('input:radio:checked').attr("id");
     return systems[option];
@@ -204,6 +211,30 @@ function getSelectedTemperament() {
 function onTemperamentChange(event) {
     var identifier = event.currentTarget.children[0].id;
     player.setTemperament(systems[identifier]);
+    updateTemperamentShiftRadio(systems[identifier]);
+}
+
+function updateTemperamentShiftRadio(temperament) {
+    var rootNote = temperament.getCurrentRootNote();
+    var container = $('#rootNoteSelect');
+    container.children().removeClass("active");
+
+    if (rootNote === undefined) {
+        container.children().addClass("disabled");
+    } else {
+        container.children().removeClass("disabled");
+        setRadioChecked(container.find("#NOTE_" + rootNote).parent(), true);
+    }
+}
+
+function setRadioChecked(label, val) {
+    if (val) {
+        label.addClass("active");
+        label.children(":first").prop('checked', true);
+    } else {
+        label.removeClass("active");
+        label.children(":first").prop('checked', false);
+    }
 }
 
 /**
@@ -228,8 +259,7 @@ function renderAvailableTemperaments(tuningSystems, containerId) {
             .append(key);
         label.children(":first").attr("id", value);
         if (first) {
-            label.addClass("active");
-            label.children(":first").prop('checked', true);
+            setRadioChecked(label, true);
             first = false;
         }
         $el.append(label);

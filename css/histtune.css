@@ -45,6 +45,10 @@ section {
     color: white;
 }
 
+.radio-button-select {
+    margin-bottom: 0.5em;
+}
+
 .upload-drop-zone {
     height: 200px;
     border-width: 2px;
