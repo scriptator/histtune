@@ -43,7 +43,7 @@ var Notes = Object.freeze({C: 0, Cis: 1, D: 2, Dis: 3, E: 4, F: 5, Fis: 6, G: 7,
  * @param concertPitch [optional] the concert pitch in Hz, default 440
  * @constructor
  */
-function TuningSystem(name, deviations, rootNote, concertPitch) {
+function TuningSystem(identifier, name, deviations, rootNote, concertPitch) {
 
     /**
      * This function calculates the pitch in Hertz given this tuning system, given a note object.
@@ -136,6 +136,7 @@ function TuningSystem(name, deviations, rootNote, concertPitch) {
         throw new Error("Deviations has to be an array containing the deviations from equal temerament in cents.");
     }
 
+    this.identifier = identifier;
     this.name = name;
 
     this.originalRootNote = rootNote;
@@ -177,12 +178,12 @@ var TuningSystems = {
     loadFromObject: function (parsedJson) {
         var parsed = {};
 
-        for(key in parsedJson) {
+        for(var key in parsedJson) {
             try {
                 var name = parsedJson[key].name;
                 var deviations = parsedJson[key].deviations;
                 var rootNote = parsedJson[key].rootNote;
-                parsed[key] = new TuningSystem(name, deviations, rootNote);
+                parsed[key] = new TuningSystem(key, name, deviations, rootNote);
             } catch (e) {
                 throw new TypeError("Could not parse data structure containing Tuning System information: " + e);
             }

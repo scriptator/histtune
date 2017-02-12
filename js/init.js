@@ -35,9 +35,9 @@ $(document).ready(function() {
     initDragAndDrop();
 
     initTuningSystems(function(systems) {
+        initCharts(systems);
         renderAvailableTemperaments(systems, "#temperamentSelect");
         updateTemperamentShiftRadio(getSelectedTemperament());
-        initCharts(systems);
     });
 });
 
@@ -158,8 +158,16 @@ function getSelectedTemperament() {
 
 function onTemperamentChange(event) {
     var identifier = event.currentTarget.children[0].id;
-    player.setTemperament(systems[identifier]);
-    updateTemperamentShiftRadio(systems[identifier]);
+    var temperament = systems[identifier];
+    player.setTemperament(temperament);
+    updateTemperamentShiftRadio(temperament);
+    updateSeries(temperament);
+}
+
+function shiftTemperament(note) {
+    var temperament = getSelectedTemperament();
+    temperament.shift(note);
+    updateSeries(temperament);
 }
 
 function updateTemperamentShiftRadio(temperament) {

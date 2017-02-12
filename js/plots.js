@@ -2,6 +2,8 @@
  * Created by Johannes Vass, 2017
  */
 
+var seriesLookup = {};
+
 function initCharts(temperamentDict) {
 
     var series = prepareChartSeries(temperamentDict);
@@ -43,13 +45,20 @@ function initCharts(temperamentDict) {
 
 function prepareChartSeries(temperamtentsDict) {
     var series = [];
-    for (key in temperamtentsDict) {
+    var i=0;
+    for (var key in temperamtentsDict) {
+        seriesLookup[key] = i++;
         var data = temperamtentsDict[key];
         series.push({
             name: data.name,
             data: data.getDeviationsInCircleOfFifths(-3)
         });
     }
-
     return series;
+}
+
+function updateSeries(temperament) {
+    var temperamentSeries = chart.series[seriesLookup[temperament.identifier]];
+
+    temperamentSeries.setData(temperament.getDeviationsInCircleOfFifths(-3));
 }
