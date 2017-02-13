@@ -2,6 +2,8 @@
 <html>
 <head>
 	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 	<script src="js/vendor/jquery-1.12.0.min.js"></script>
 	<script src="js/tuningsystem.js"></script>
     <script src="js/player.js"></script>
@@ -17,30 +19,55 @@
 
     <!-- Jasmid -->
     <script src="jasmid/stream.js"></script>
-    <script src="jasmid/audio.js"></script>
     <script src="jasmid/midifile.js"></script>
-    <script src="jasmid/replayer.js"></script>
     <script src="jasmid/synth.js"></script>
+    <script src="jasmid/replayer.js"></script>
+    <script src="jasmid/audio.js"></script>
 
     <!-- Charts -->
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="js/plots.js"></script>
 
-    <title>Histtune Hören</title>
+    <title>Histtune</title>
 </head>
 <body>
-<a href="https://github.com/smaug95"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+<!-- "Fork me on Github"-Banner -->
+<a href="https://github.com/smaug95"><img class="github-banner" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
 <section>
     <div class="section-content aligned container">
         <h1>Historische Stimmungssysteme entdecken</h1>
-        Willkommen bei Histtune, einem interaktiven Tool zum Entdecken und Vergleichen von Stimmungssystemen.
 
+        <p>
+            Willkommen bei <strong>Histtune</strong>, einem interaktiven Tool zum Entdecken und Vergleichen von Stimmungssystemen.
+            Hier kannst du MIDI-Dateien in einer auswählbaren Stimmung abspielen. Das kann entweder die heute übliche
+            gleichstufige (oder auch gleichschwebend temperierte) Stimmung sein, oder eine der historischen Stimmungen,
+            die man in früheren Jahrhunderten genützt hat.
+        </p>
+
+        <p>
+            Die Dateien werden auf einem synthethischen Instrument abgespielt, das ein bisschen nach einer Orgel
+            klingt, egal auf welchem MIDI-Channel sie eigentlich notiert sind. Das hört sich zwar nicht immer besonders
+            schön an, aber das ist auch nicht der Sinn der Sache. Man hört dafür nämlich besonders gut, ob Töne rein
+            zusammenklingen oder mit Schwebungen.
+        </p>
+
+        <p>
+            <strong>Histtune</strong> ist als Abschlussprojekt der Lehrveranstaltung
+            <a href="https://ufind.univie.ac.at/de/course.html?lv=160018&semester=2016W" target="_blank">
+                Wunderbare Welt der musikalischen Akustik: Synthese
+            </a>
+            bei Prof. Reuter im Wintersemester 2016 entstanden. Das gesamte Projekt findet sich auch auf folgender
+            <a href="https://github.com/smaug95/histtune" target="_blank">Github Project Page</a>. Wenn du
+            Verbesserungsvorschläge hast, lass sie mir doch dort zukommen oder sende mir gleich einen Pull Request.
+        </p>
     </div>
 </section>
 
-<section id="temperaments-section">
+<section id="midi-files-section">
     <div class="section-content aligned container">
+        <h2>Ausprobieren</h2>
         <div id="temperamentSelect" class="radio-button-select btn-group btn-group-justified" data-toggle="buttons"></div>
         <div id="rootNoteSelect" class="radio-button-select btn-group btn-group-justified" data-toggle="buttons">
             <label class="btn btn-primary" onclick="shiftTemperament(0)"><input name="noteSel" id="NOTE_0" type="radio">C</label>
@@ -56,12 +83,7 @@
             <label class="btn btn-primary" onclick="shiftTemperament(10)"><input name="noteSel" id="NOTE_10" type="radio">B♭</label>
             <label class="btn btn-primary" onclick="shiftTemperament(11)"><input name="noteSel" id="NOTE_11" type="radio">H</label>
         </div>
-        </div>
-</section>
 
-<section id="midi-files-section">
-    <div class="section-content aligned container">
-        <h2></h2>
         <div class="row">
             <ul id="midi-file-list" class="col-md-6">
                 <li><a href="javascript:void(play('c-dur-kadenz', 'midi/c-kadenz.mid'))">Kadenz in C-Dur</a></li>
@@ -101,16 +123,34 @@
 <section id="charts-section">
     <div class="section-content aligned container">
         <h2>Visualisierung der Abweichungen</h2>
-        Die folgende interaktive Grafik veranschaulicht, inwiefern sich die historischen Stimmungssysteme von einander
-        unterscheiden.
+        <p>
+            Die folgende interaktive Grafik veranschaulicht, um wie viele
+            <a href="https://de.wikipedia.org/wiki/Cent_(Musik)" target="_blank">Cent</a>
+            die historischen Stimmungssysteme von der heute üblichen gleichstufigen Stimmung abweichen.
+        </p>
         <div id="chartsContainer" class="aligned chart"></div>
     </div>
 </section>
 
 <section id="footer-section">
     <div class="section-content aligned container">
-        <h2>Footer</h2>
-        <p>TODO hier soll ein toller Footer hin!</p>
+        <h2>Impressum</h2>
+        <p>
+            Johannes Vass <br>
+            <a href="mailto:johannes.vass@student.tuwien.ac.at">johannes.vass@student.tuwien.ac.at</a>
+        </p>
+
+        <p>
+            1140<br>
+            Wien<br>
+            Österreich
+        </p>
+
+        <p>
+
+        </p>
+
+        <p>&#169 Johannes Vass 2017</p>
     </div>
 </section>
 

@@ -17,3 +17,11 @@ for making XHR requests. For development I suggest the following very simple sol
 * **cd** into the repository root
 * execute: **python3 -m http.server**
 * --> the website will be served under http://localhost:8000
+
+## Add further tuning systems
+
+Per default the JSON file *default_tuning_systems.json* is loaded on application startup. If you want to adapt the
+systems it will be the easiest to edit this very file. Just stick to the format imposed by the existing entries in there.
+
+As soon as you are done you just need to reload the website and the changes will be displayed and new entries will
+show up in the selection and plots.

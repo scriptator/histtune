@@ -10,7 +10,7 @@ function initCharts(temperamentDict) {
 
     chart = Highcharts.chart('chartsContainer', {
         title: {
-            text: 'Vergleich der Stimmungssysteme',
+            text: '',
             x: -20 //center
         },
         xAxis: {
@@ -18,7 +18,7 @@ function initCharts(temperamentDict) {
         },
         yAxis: {
             title: {
-                text: 'Abweichungen von der gleichschwebend temp. Stimmung in Cent'
+                text: 'Abweichungen von der gleichstufigen Stimmung in Cent'
             },
             plotLines: [{
                 value: 0,
@@ -34,9 +34,9 @@ function initCharts(temperamentDict) {
             valueDecimals: 1
         },
         legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'middle',
+            layout: 'horizontal',
+            align: 'center',
+            verticalAlign: 'bottom',
             borderWidth: 0
         },
         series: series
