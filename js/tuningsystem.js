@@ -35,6 +35,7 @@ var Notes = Object.freeze({C: 0, Cis: 1, D: 2, Dis: 3, E: 4, F: 5, Fis: 6, G: 7,
 /**
  * Construct a new TuningSystem.
  *
+ * @param identifier a unique string
  * @param name the display name of the temperament
  * @param deviations an array containing 12 numbers which get interpreted as the deviations from the equal temerament
  *        in cents, starting from C ranging up to B
@@ -46,7 +47,8 @@ var Notes = Object.freeze({C: 0, Cis: 1, D: 2, Dis: 3, E: 4, F: 5, Fis: 6, G: 7,
 function TuningSystem(identifier, name, deviations, rootNote, concertPitch) {
 
     /**
-     * This function calculates the pitch in Hertz given this tuning system, given a note object.
+     * This function calculates the pitch in Hertz given this tuning system, given a note object, taking the preset
+     * pitchbend (in semi-tones) into account.
      *
      * @param note the note object
      * @returns the pitch in Hz as a {number}
@@ -66,7 +68,7 @@ function TuningSystem(identifier, name, deviations, rootNote, concertPitch) {
      * @returns the pitch in Hz as a {number}
      */
     this.getPitchForMidiNote = function (midiNote) {
-        var parsedNote = new Note(midiNote);
+        var parsedNote = new Note(midiNote + this.pitchbend);
         return this.getPitchForNote(parsedNote);
     };
 
@@ -132,12 +134,23 @@ function TuningSystem(identifier, name, deviations, rootNote, concertPitch) {
         return deviations;
     };
 
+    /**
+     * This function sets the pitchbend of this tuning system in semitones. That means, from now on it will add this
+     * amount of semitones to the midi note value, increasing or decreasing it by the given number of semi-tones.
+     *
+     * @param semitones the number of semitones
+     */
+    this.setPitchbend = function(semitones) {
+        this.pitchbend = Math.round(semitones);
+    };
+
     if (!deviations.length === 12) {
         throw new Error("Deviations has to be an array containing the deviations from equal temerament in cents.");
     }
 
     this.identifier = identifier;
     this.name = name;
+    this.pitchbend = 0;
 
     this.originalRootNote = rootNote;
     this.deviations = deviations;

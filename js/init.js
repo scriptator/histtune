@@ -41,6 +41,11 @@ $(document).ready(function() {
         initCharts(systems);
         renderAvailableTemperaments(systems, "#temperamentSelect");
         updateTemperamentShiftRadio(getSelectedTemperament());
+        updatePitchbend();
+    });
+
+    $('#pitchbend').on('input', function(e) {
+        getSelectedTemperament().setPitchbend(e.target.value);
     });
 });
 
@@ -178,6 +183,7 @@ function onTemperamentChange(event) {
     player.setTemperament(temperament);
     updateTemperamentShiftRadio(temperament);
     updateSeries(temperament);
+    updatePitchbend();
 }
 
 function shiftTemperament(note) {
@@ -197,6 +203,10 @@ function updateTemperamentShiftRadio(temperament) {
         container.children().removeClass("disabled");
         setRadioChecked(container.find("#NOTE_" + rootNote).parent(), true);
     }
+}
+
+function updatePitchbend() {
+    getSelectedTemperament().setPitchbend($("#pitchbend").val());
 }
 
 function setRadioChecked(label, val) {

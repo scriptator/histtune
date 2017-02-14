@@ -82,6 +82,17 @@ section {
     border: 0;
 }
 
+.pitchbend-form > input {
+    width: 40px;
+    height: 34px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.pitchbend-form {
+    display: inline-block;
+}
+
 .upload-drop-zone {
     height: 200px;
     border-width: 2px;
