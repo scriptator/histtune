@@ -148,7 +148,20 @@ function play(identifier, file) {
 }
 
 function playerStateChangeHandler(identifier, state) {
-    console.log(identifier + ": " + state)
+    console.log(identifier + ": " + state);
+    var text;
+
+    if (state === PlayerStates.STOPPED) {
+        $("#stop-button").addClass("disabled");
+        $("#restart-button").removeClass("disabled");
+        text = "Gestoppt: "
+    } else if (state === PlayerStates.PLAYING) {
+        $("#stop-button").removeClass("disabled");
+        $("#restart-button").removeClass("disabled");
+        text = "Spielt gerade: "
+    }
+
+    $("#player-label").text(text + identifier);
 }
 
 /**

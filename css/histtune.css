@@ -64,8 +64,12 @@ section {
     color: white;
 }
 
-.radio-button-select {
+.radio-button-select, .player {
     margin-bottom: 0.5em;
+}
+
+.player > * {
+    margin-right: 0.3em;
 }
 
 .github-banner {
@@ -94,4 +98,39 @@ section {
 .upload-drop-zone.drop {
     color: #222;
     border-color: #222;
+}
+
+ul.file-list {
+    list-style-type: none;
+    padding-left: 0 !important;
+    padding-right: 1em;
+    margin: 0;
+}
+
+ul.file-list:last-child {
+    padding: 0;
+}
+
+.file-list li {
+    border-bottom: 1px solid #828282;
+    line-height: 180%;
+}
+
+.file-list li:last-child {
+    border: none;
+}
+
+.file-list li a {
+    text-decoration: none;
+    color: #000;
+    display: block;
+
+    -webkit-transition: font-size 0.2s ease;
+    -moz-transition: font-size 0.2s ease;
+    -o-transition: font-size 0.2s ease;
+    transition: font-size 0.2s ease;
+}
+
+.file-list li a:hover {
+    font-size: 15px;
 }

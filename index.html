@@ -68,6 +68,7 @@
 <section id="midi-files-section">
     <div class="section-content aligned container">
         <h2>Ausprobieren</h2>
+
         <div id="temperamentSelect" class="radio-button-select btn-group btn-group-justified" data-toggle="buttons"></div>
         <div id="rootNoteSelect" class="radio-button-select btn-group btn-group-justified" data-toggle="buttons">
             <label class="btn btn-primary" onclick="shiftTemperament(0)"><input name="noteSel" id="NOTE_0" type="radio">C</label>
@@ -84,8 +85,18 @@
             <label class="btn btn-primary" onclick="shiftTemperament(11)"><input name="noteSel" id="NOTE_11" type="radio">H</label>
         </div>
 
-        <div class="row">
-            <ul id="midi-file-list" class="col-md-6">
+        <div class="player">
+            <button class="btn btn-success disabled" onclick="player.restart()" id="restart-button">
+                <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+            </button>
+            <button class="btn btn-danger disabled"  onclick="player.stop()" id="stop-button">
+                <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
+            </button>
+            <span id="player-label">Kein Stück geladen.</span>
+        </div>
+
+        <div class="row file-selection">
+            <ul id="midi-file-list" class="col-md-6 file-list">
                 <li><a href="javascript:void(play('c-dur-kadenz', 'midi/c-kadenz.mid'))">Kadenz in C-Dur</a></li>
                 <li><a href="javascript:void(play('as-dur-kadenz', 'midi/as-kadenz.mid'))">Kadenz in As-Dur</a></li>
                 <li><a href="javascript:void(play('liszt_etude_12', 'midi/liszt_etude_12_exercices_9_as_dur.mid'))">Liszt Etüde 12 in As-Dur</a></li>
@@ -95,7 +106,7 @@
                 <li><a href="javascript:void(play('dancing-queen', 'midi/ABBA_-_Dancing_Queen.mid'))">ABBA - Dancing Queen in A-Dur</a></li>
             </ul>
 
-            <ul id="user-midi-file-list" class="col-md-6"></ul>
+            <ul id="user-midi-file-list" class="col-md-6 file-list"></ul>
         </div>
 
         <div class="row">

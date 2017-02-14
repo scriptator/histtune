@@ -49,6 +49,7 @@ function Player(callback) {
     };
 
     this.setTemperament = function (temperament) {
+        this.temperament = temperament;
         if (this.synth) {
             this.synth.setTemperament(temperament);
         } else {
@@ -64,6 +65,7 @@ function Player(callback) {
 
         // play the new file
         this.identifier = identifier;
+        this.temperament = temperament;
         this.midiFile = midiFile;
         this.synth = Synth(44100, temperament);
         var replayer = Replayer(this.midiFile, this.synth, OrganProgram);
@@ -71,6 +73,10 @@ function Player(callback) {
 
         this.state = PlayerStates.PLAYING;
         this.callback(this.identifier, this.state);
+    };
+
+    this.restart = function () {
+        this.play(this.identifier, this.midiFile, this.temperament);
     };
 
     this.stop = function () {
