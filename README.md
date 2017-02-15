@@ -5,6 +5,9 @@ Histtune is my final project of the course *Wunderbare Welt der musikalischen Ak
 It lets you explore historical tuning systems and compare them with our usual *equal temperament* by playing examples.
 The major point is, however, that it is a full MIDI player, where you can play your own MIDI files in a chosen temperament.
 
+The frontend part is rather ugly because I only put it together quickly using jQuery. However, the logic behind the tuning
+systems is quite good, I think.
+
 ## Demo
 
 Visit https://smaug95.github.io/histtune/ to see it working.
