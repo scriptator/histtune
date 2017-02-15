@@ -95,15 +95,19 @@ function initDragAndDrop() {
  * @param files an array of files
  */
 function addMIDIFilesToList(files) {
-    for (var i=0; i < files.length; i++) {
-        var file = files[i];
-        var reader = new FileReader();
-        reader.onload = function () {
-            userMidiFiles[file.name] = reader.result;
+    var i = 0;
+    var file = files[i];
+    var reader = new FileReader();
+    reader.onload = function () {
+        userMidiFiles[file.name] = reader.result;
+        if (i + 1 === files.length) {
             renderUserMidiFiles();
-        };
-        reader.readAsBinaryString(file);
-    }
+        } else {
+            file = files[++i];
+            reader.readAsBinaryString(file);
+        }
+    };
+    reader.readAsBinaryString(file);
 }
 
 /**
@@ -181,9 +185,9 @@ function onTemperamentChange(event) {
     var identifier = event.currentTarget.children[0].id;
     var temperament = systems[identifier];
     player.setTemperament(temperament);
+    updatePitchbend(temperament);
     updateTemperamentShiftRadio(temperament);
     updateSeries(temperament);
-    updatePitchbend();
 }
 
 function shiftTemperament(note) {
@@ -205,8 +209,11 @@ function updateTemperamentShiftRadio(temperament) {
     }
 }
 
-function updatePitchbend() {
-    getSelectedTemperament().setPitchbend($("#pitchbend").val());
+function updatePitchbend(temperament) {
+    if (!temperament) {
+        temperament = getSelectedTemperament();
+    }
+    temperament.setPitchbend($("#pitchbend").val());
 }
 
 function setRadioChecked(label, val) {
