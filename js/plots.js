@@ -9,6 +9,9 @@ function initCharts(temperamentDict) {
     var series = prepareChartSeries(temperamentDict);
 
     chart = Highcharts.chart('chartsContainer', {
+        chart: {
+            backgroundColor: '#F0F0F0'
+        },
         title: {
             text: '',
             x: -20 //center
@@ -24,7 +27,9 @@ function initCharts(temperamentDict) {
                 value: 0,
                 width: 1,
                 color: '#808080'
-            }]
+            }],
+            gridLineColor: '#bbbbbb'
+
         },
         tooltip: {
             valueSuffix: ' Cent',

@@ -47,12 +47,17 @@ section {
     font-style: normal;
 }
 
+#introduction-section {
+    /*background-color: #adcdd6;*/
+    background-color: #d7d7d7;
+}
+
 #midi-files-section {
-    background-color: #c3ceb8;
+    background-color: #d2e7ec;
 }
 
 #charts-section {
-    background-color: white;
+    background-color: #F0F0F0;
 }
 
 .chart {
@@ -60,8 +65,8 @@ section {
 }
 
 #footer-section {
-    background-color: slategray;
-    color: white;
+    background-color: white;
+    color: black;
 }
 
 .radio-button-select, .player {
@@ -115,11 +120,13 @@ ul.file-list {
     list-style-type: none;
     padding-left: 0 !important;
     padding-right: 1em;
+    padding-bottom: 0.5em;
+    padding-top: 0.5em;
     margin: 0;
 }
 
 ul.file-list:last-child {
-    padding: 0;
+    padding-right: 0;
 }
 
 .file-list li {
