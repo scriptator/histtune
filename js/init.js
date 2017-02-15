@@ -145,6 +145,7 @@ function loadRemote(path, callback) {
 
 function play(identifier, file) {
     if (file) {
+        getAudioContext();
         loadRemote(file, startPlaying);
     } else {
         startPlaying(userMidiFiles[identifier])

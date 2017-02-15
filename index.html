@@ -25,8 +25,7 @@
     <script src="jasmid/audio.js"></script>
 
     <!-- Charts -->
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="js/vendor/highcharts-v5.0.7.js"></script>
     <script src="js/plots.js"></script>
 
     <title>Histtune</title>
@@ -58,9 +57,10 @@
             <a href="https://ufind.univie.ac.at/de/course.html?lv=160018&semester=2016W" target="_blank">
                 Wunderbare Welt der musikalischen Akustik: Synthese
             </a>
-            bei Prof. Reuter im Wintersemester 2016 entstanden. Das gesamte Projekt findet sich auch auf folgender
-            <a href="https://github.com/smaug95/histtune" target="_blank">Github Project Page</a>. Wenn du
-            Verbesserungsvorschläge hast, lass sie mir doch dort zukommen oder sende mir gleich einen Pull Request.
+            bei Prof. Reuter an der Universität Wien im Wintersemester 2016 entstanden. Das gesamte Projekt findet sich
+            auch auf folgender <a href="https://github.com/smaug95/histtune" target="_blank">Github Project Page</a>.
+            Wenn du Verbesserungsvorschläge hast, lass sie mir doch dort zukommen oder sende mir gleich einen
+            Pull Request.
         </p>
     </div>
 </section>
@@ -94,6 +94,7 @@
             </button>
 
             <form class="pitchbend-form">
+                <label for="pitchbend" style="display: none">Um Halbtonschritte absenken oder erhöhen</label>
                 <input id="pitchbend" type="number" name="quantity" min="-12" max="12" value="0">
             </form>
             <span id="player-label">Kein Stück geladen.</span>
@@ -103,11 +104,13 @@
             <ul id="midi-file-list" class="col-md-6 file-list">
                 <li><a href="javascript:void(play('c-dur-kadenz', 'midi/c-kadenz.mid'))">Kadenz in C-Dur</a></li>
                 <li><a href="javascript:void(play('as-dur-kadenz', 'midi/as-kadenz.mid'))">Kadenz in As-Dur</a></li>
+                <li><a href="javascript:void(play('dancing-queen', 'midi/ABBA_-_Dancing_Queen.mid'))">ABBA - Dancing Queen in A-Dur</a></li>
                 <li><a href="javascript:void(play('liszt_etude_12', 'midi/liszt_etude_12_exercices_9_as_dur.mid'))">Liszt Etüde 12 in As-Dur</a></li>
                 <li><a href="javascript:void(play('chopin-waltz-61', 'midi/minute_waltz.mid'))">Chopin - Waltz Op.61 (Minute Waltz) in As-Dur</a></li>
-                <li><a href="javascript:void(play('rachmaninov-concerto-3', 'midi/rachmaninov3.mid'))">Rachmaninov - Piano Concerto No.3 in d-Moll</a></li>
-                <li><a href="javascript:void(play('brahms-intermezzo', 'midi/intermezzo.mid'))">Brahms - Intermezzo in Cis-Dur Op-117 No-3</a></li>
-                <li><a href="javascript:void(play('dancing-queen', 'midi/ABBA_-_Dancing_Queen.mid'))">ABBA - Dancing Queen in A-Dur</a></li>
+                <li><a href="javascript:void(play('mondscheinsonate', 'midi/mondscheinsonate.mid'))">Beethoven - Sonate Nr. 14 in C#-Moll (Mondscheinsonate)</a></li>
+                <li><a href="javascript:void(play('fürelise', 'midi/furelise.mid'))">Beethoven - Für Elise in A-Moll</a></li>
+                <li><a href="javascript:void(play('nachtmusik', 'midi/eine-kleine-nachtmusik.mid'))">Mozart - Eine kleine Nachtmusik in G-Dur</a></li>
+                <li><a href="javascript:void(play('impromptu-as-dur', 'midi/schubert-impromptu-as.mid'))">Schubert - Impromptu in As-Moll Op. 90. No. 4.</a></li>
             </ul>
 
             <ul id="user-midi-file-list" class="col-md-6 file-list"></ul>
@@ -162,7 +165,7 @@
         </p>
 
         <p>
-
+            Die Rechte an den eingebetteten MIDI-Files gehören <a href="http://www.midiworld.com/">www.midiworld.com</a>.
         </p>
 
         <p>&#169 Johannes Vass 2017</p>
