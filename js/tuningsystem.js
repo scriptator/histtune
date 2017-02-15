@@ -40,11 +40,11 @@ var Notes = Object.freeze({C: 0, Cis: 1, D: 2, Dis: 3, E: 4, F: 5, Fis: 6, G: 7,
  * @param deviations an array containing 12 numbers which get interpreted as the deviations from the equal temerament
  *        in cents, starting from C ranging up to B
  * @param rootNote the base note of the tuning system given as the index of the note in semitones starting from c.
- *        If set to such a number, the system is expected to be sensibly transformable to other bases
  * @param concertPitch [optional] the concert pitch in Hz, default 440
+ * @param shiftable a boolean stating whether the system can be sensibly transformed to other base notes
  * @constructor
  */
-function TuningSystem(identifier, name, deviations, rootNote, concertPitch) {
+function TuningSystem(identifier, name, deviations, rootNote, shiftable, concertPitch) {
 
     /**
      * This function calculates the pitch in Hertz given this tuning system, given a note object, taking the preset
@@ -85,7 +85,7 @@ function TuningSystem(identifier, name, deviations, rootNote, concertPitch) {
      * shifting the deviation array around.
      */
     this.isShiftable = function() {
-        return this.originalRootNote !== undefined;
+        return this.shiftable;
     };
 
     /**
@@ -154,7 +154,7 @@ function TuningSystem(identifier, name, deviations, rootNote, concertPitch) {
 
     this.originalRootNote = rootNote;
     this.deviations = deviations;
-
+    this.shiftable = shiftable;
     this.currentRootNote = rootNote;
     this.shiftedDeviations = deviations.slice();
 
@@ -196,7 +196,8 @@ var TuningSystems = {
                 var name = parsedJson[key].name;
                 var deviations = parsedJson[key].deviations;
                 var rootNote = parsedJson[key].rootNote;
-                parsed[key] = new TuningSystem(key, name, deviations, rootNote);
+                var shiftable = parsedJson[key].isShiftable === true;
+                parsed[key] = new TuningSystem(key, name, deviations, rootNote, shiftable);
             } catch (e) {
                 throw new TypeError("Could not parse data structure containing Tuning System information: " + e);
             }

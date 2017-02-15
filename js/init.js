@@ -197,11 +197,11 @@ function updateTemperamentShiftRadio(temperament) {
     var container = $('#rootNoteSelect');
     container.children().removeClass("active");
 
-    if (rootNote === undefined) {
-        container.children().addClass("disabled");
-    } else {
+    setRadioChecked(container.find("#NOTE_" + rootNote).parent(), true);
+    if (temperament.isShiftable()) {
         container.children().removeClass("disabled");
-        setRadioChecked(container.find("#NOTE_" + rootNote).parent(), true);
+    } else {
+        container.children().addClass("disabled");
     }
 }
 

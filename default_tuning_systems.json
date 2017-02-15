@@ -2,22 +2,28 @@
   "EQUAL_TEMPERAMENT": {
     "name": "Gleichstufige Stimmung",
     "deviations": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    "rootNote": 0
+    "rootNote": 0,
+    "isShiftable": false
   },
 
   "MEANTONE_TEMPERAMENT": {
     "name": "Mitteltönige Stimmung",
-    "deviations": [0, -23.95, -6.84, 10.26, -13.69, 3.42, -20.53, -3.42, -27.37, -10.26, 6.84, -17.11]
+    "deviations": [0, -23.95, -6.84, 10.26, -13.69, 3.42, -20.53, -3.42, -27.37, -10.26, 6.84, -17.11],
+    "rootNote": 0,
+    "isShiftable": false
   },
 
   "PYTHAGOREAN_TUNING": {
     "name": "Pythagoreische Stimmung",
-    "deviations": [-3.91, 9.78, 0, -9.78, 3.91, -5.87, 7.82, -1.96, 11.73, 1.96, -7.82, 5.87]
+    "deviations": [-3.91, 9.78, 0, -9.78, 3.91, -5.87, 7.82, -1.96, 11.73, 1.96, -7.82, 5.87],
+    "rootNote": 2,
+    "isShiftable": true
   },
 
   "JUST_INTONATION": {
     "name": "Reine Stimmung",
     "deviations": [0, 11.73, 3.91, 15.64, -13.69, -1.96, -9.78, 1.96, 13.69, -15.64, 17.6, -11.73],
-    "rootNote": 0
+    "rootNote": 0,
+    "isShiftable": true
   }
 }
