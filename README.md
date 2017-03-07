@@ -10,7 +10,7 @@ systems is quite good, I think.
 
 ## Demo
 
-Visit https://smaug95.github.io/histtune/ to see it working.
+Visit https://scriptator.github.io/histtune/ for a demo instance.
 
 ## Run locally
 
